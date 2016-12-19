@@ -14,7 +14,15 @@ function getUserById(userId){
     .first()
 }
 
+function pullRequests(){
+  return knex
+    .select('*')
+    .from('pull_requests')
+    .orderBy('created_at', 'asc')
+}
+
 export default {
   users,
   getUserById,
+  pullRequests,
 }

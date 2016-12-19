@@ -33,7 +33,28 @@ function findOrCreateUserFromGithubProfile(githubProfile){
     .then(user => user ? user : createUser(userAttributes))
 }
 
+function addPullRequest({repository, number}){
+  return knex
+    .insert({
+      repository,
+      number,
+      created_at: new Date,
+      updated_at: new Date,
+    })
+    .into('pull_requests')
+    .catch( error => {
+      if (error && error.message.includes('duplicate key value violates unique constraint')){
+        const newError = new Error('duplicate')
+        newError.originalError = error
+        newError.repository = repository
+        newError.number = number
+        throw newError
+      }
+      throw error
+    })
+}
 
 export default {
   findOrCreateUserFromGithubProfile,
+  addPullRequest,
 }

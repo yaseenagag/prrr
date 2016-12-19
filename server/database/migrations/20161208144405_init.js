@@ -14,8 +14,10 @@ exports.up = knex =>
       table.increments('id').primary()
       table.string('repository').notNullable()
       table.integer('number').notNullable()
-      table.unique(['repository', 'number'])
+      table.integer('requested_by').notNullable() // github_id
+      table.integer('claimed_by') // github_id
       table.timestamps()
+      table.unique(['repository', 'number'])
     }),
 
   ])
