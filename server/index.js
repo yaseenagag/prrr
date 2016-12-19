@@ -19,7 +19,7 @@ server.use(cookieSession({
 server.use(passport.initialize());
 server.use(passport.session());
 server.use(express.static(publicPath))
-server.use(bodyParser.json({extended: true}))
+server.use(bodyParser.json())
 
 server.use(require('./authentication'))
 server.use('/api', require('./api'))

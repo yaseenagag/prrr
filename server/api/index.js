@@ -15,6 +15,26 @@ router.post('/logout', (req, res, next) => {
   res.json(null)
 });
 
+
+router.get('/pull-requests', (req, res, next) => {
+  queries.pullRequests()
+    .then(pullRequests => {
+      res.json(pullRequests)
+    })
+    .catch(next)
+});
+
+router.post('/pull-requests', (req, res, next) => {
+  commands.addPullRequest({
+    repository: req.body.repository,
+    number: Number(req.body.number),
+  })
+    .then(pullRequest => {
+      res.json(pullRequest)
+    })
+    .catch(next)
+});
+
 // error handlers
 
 router.use((req, res, next) => {
@@ -28,12 +48,13 @@ router.use((error, req, res, next) => {
     ? error.stack
     : null
   res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-      stack: stack,
-    },
-  });
+  const json = {
+    error: {},
+  }
+  Object.assign(json.error, error)
+  json.error.message = error.message
+  json.error.stack = stack
+  res.json(json);
 });
 
 module.exports = router
