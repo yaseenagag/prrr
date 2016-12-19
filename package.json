@@ -12,7 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-session": "^2.0.0-alpha.2",
     "dotenv": "^2.0.0",
+    "knex": "^0.12.6",
+    "moment": "^2.17.1",
+    "morgan": "^1.7.0",
+    "normalize.css": "^5.0.0",
+    "passport": "^0.3.2",
+    "passport-github": "^1.1.0",
+    "pg": "^6.1.2",
+    "simple-react-router": "^0.0.11",
     "webappatron": "deadlyicon/webappatron"
   }
 }
