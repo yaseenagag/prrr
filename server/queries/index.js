@@ -1,28 +1,31 @@
 import knex from '../knex'
 
-function users(){
-  return knex
-    .select('*')
-    .from('users')
-}
+export default class Queries {
 
-function getUserById(userId){
-  return knex
-    .select('*')
-    .from('users')
-    .where('id', userId)
-    .first()
-}
+  constructor(currentUser, _knex=knex){
+    this.currentUser = currentUser
+    this.knex = _knex
+  }
 
-function pullRequests(){
-  return knex
-    .select('*')
-    .from('pull_requests')
-    .orderBy('created_at', 'asc')
-}
+  users(){
+    return this.knex
+      .select('*')
+      .from('users')
+  }
 
-export default {
-  users,
-  getUserById,
-  pullRequests,
+  getUserById(userId){
+    return this.knex
+      .select('*')
+      .from('users')
+      .where('id', userId)
+      .first()
+  }
+
+  pullRequests(){
+    return this.knex
+      .select('*')
+      .from('pull_requests')
+      .orderBy('created_at', 'asc')
+  }
+
 }

@@ -1,7 +1,8 @@
 import express from 'express'
 import passport from 'passport'
-import queries from './queries'
-import commands from './commands'
+import Queries from './queries'
+import Commands from './commands'
+
 const router = new express.Router()
 
 const GitHubStrategy = require('passport-github').Strategy
@@ -13,7 +14,7 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log('GITHUB LOGIN?', accessToken, refreshToken, profile)
-    commands.findOrCreateUserFromGithubProfile(profile)
+    new Commands().findOrCreateUserFromGithubProfile(profile)
       .then(user => {
         cb(undefined, user);
       })
@@ -28,7 +29,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
-  queries.getUserById(user.id)
+  new Queries().getUserById(user.id)
     .then( user  => done(null, user))
     .catch(error => done(error))
 });

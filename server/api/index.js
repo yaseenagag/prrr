@@ -1,8 +1,15 @@
 import express from 'express'
-import commands from '../commands'
-import queries from '../queries'
+import Commands from '../commands'
+import Queries from '../queries'
 
 const router = new express.Router()
+
+router.use((req, res, next) => {
+  req.queries = new Queries(req.user)
+  req.commands = new Commands(req.user)
+  console.log(req.queries)
+  next()
+})
 
 router.get('/session', (req, res, next) => {
   res.json({
@@ -17,7 +24,7 @@ router.post('/logout', (req, res, next) => {
 
 
 router.get('/pull-requests', (req, res, next) => {
-  queries.pullRequests()
+  req.queries.pullRequests()
     .then(pullRequests => {
       res.json(pullRequests)
     })
@@ -25,7 +32,7 @@ router.get('/pull-requests', (req, res, next) => {
 });
 
 router.post('/pull-requests', (req, res, next) => {
-  commands.addPullRequest({
+  req.commands.addPullRequest({
     repository: req.body.repository,
     number: Number(req.body.number),
   })
