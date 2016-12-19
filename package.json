@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "webappatron test",
+    "start": "webappatron start",
+    "build": "webappatron build"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "webappatron": "deadlyicon/webappatron"
+  }
 }
