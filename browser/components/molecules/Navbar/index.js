@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import Button from './Button'
-import Avatar from './Avatar'
-import './Navbar.sass'
-import logout from '../actions/logout'
+import Button from '../../atoms/Button'
+import Avatar from '../../atoms/Avatar'
+import './index.sass'
+import logout from '../../../actions/logout'
 
 export default class Navbar extends Component {
 
@@ -16,7 +16,7 @@ export default class Navbar extends Component {
       <div>
         <Button type={false} href="/">Prrr</Button>
         &nbsp;
-        <Button type={false} href="/skills">skills</Button>
+        <Button href="/request">Request Review</Button>
       </div>
       <div>
         <span>{user.name}</span>

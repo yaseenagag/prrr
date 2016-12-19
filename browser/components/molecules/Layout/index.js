@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import Navbar from './Navbar'
-import './Layout.sass'
+import Navbar from '../Navbar'
+import './index.sass'
 
 export default class Layout extends Component {
 

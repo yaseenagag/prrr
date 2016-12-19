@@ -3,9 +3,11 @@ import Router from '../Router'
 
 import state from '../state'
 import loadSession from '../actions/loadSession'
-import InspectObject from './InspectObject'
+import loadPullRequests from '../actions/loadPullRequests'
+import InspectObject from './utils/InspectObject'
 
 loadSession()
+loadPullRequests()
 
 export default class Root extends Component {
 

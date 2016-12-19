@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import Link from './Link'
-import './Button.sass'
+import Link from '../Link'
 
-class Button extends Component {
+export default class Avatar extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
   };
@@ -12,5 +11,3 @@ class Button extends Component {
     return <img className="Avatar" src={src} />
   }
 }
-
-export default Button

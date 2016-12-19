@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Layout from './Layout'
-import Button from './Button'
-import InspectObject from './InspectObject'
+import Button from '../atoms/Button'
+import Layout from '../molecules/Layout'
+import InspectObject from '../utils/InspectObject'
 
 export default class LoggedOutHomePage extends Component {
   render(){
