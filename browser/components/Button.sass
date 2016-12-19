@@ -1,0 +1,32 @@
+.Button
+  display: inline-block
+  border: none
+  padding: 0
+  margin: 0
+  color: inherit
+  text-decoration: none
+  outline: none
+  cursor: pointer
+  -webkit-appearance: none
+  background-color: transparent
+
+  &-default, &-primary, &-danger, &-invisible
+    padding: 0 10px
+    border-radius: 3px
+    padding: 4px 1pc
+    min-height: 30px
+    white-space: nowrap
+    text-align: center
+
+    &:focus, &:active
+      outline: -webkit-focus-ring-color auto 5px
+
+  &-default
+    // background: -webkit-linear-gradient(top,#fff 0,#F8F9F9 100%)
+    // background: linear-gradient(to bottom,#fff 0,#F8F9F9 100%)
+    border: 1px solid #E2E4E6
+    border-bottom-color: #CDD2D4
+    // &:hover
+    //   background: #298FCA
+    //   border-color: #298FCA #298FCA #026AA7
+    //   color: #fff

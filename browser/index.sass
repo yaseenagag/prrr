@@ -1,5 +1,4 @@
-// npm install --save normalize.css
-// @import "~normalize.css/normalize.css"
+@import "~normalize.css/normalize.css"
 
 // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
 html
@@ -8,28 +7,11 @@ html
 *, *:before, *:after
   box-sizing: inherit
 
+h1,h2,h3,h4,h5,h6
+  margin: 0
+
 html, body
   height: 100%
   width: 100%
 
 body
-  background-color: #2a2c2e
-
-
-
-.webappatron-banner
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  h1, h2
-    margin: 0
-    font-family: monospace
-    color: white
-  h1
-    font-size: 10vw
-  h2
-    font-size: 7vw
-  img
-    margin-top: -99px
-    z-index: -1
