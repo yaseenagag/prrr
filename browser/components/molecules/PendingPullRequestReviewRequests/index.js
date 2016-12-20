@@ -2,12 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
-import PullRequestsTable from '../PullRequestsTable'
+import PullRequestReviewRequestsTable from '../PullRequestReviewRequestsTable'
 import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
 
-export default class PendingPullRequests extends Component {
+export default class PendingPullRequestReviewRequests extends Component {
   static propTypes = {
-    pullRequests: PropTypes.array.isRequired,
+    pullRequestReviewRequests: PropTypes.array.isRequired,
+  }
+
+  claimPullRequestReviewRequest(){
+    // var win = window.open(url, '_blank');
+    // win.focus();
   }
 
   renderAdditionalHeaders(){
@@ -16,10 +21,10 @@ export default class PendingPullRequests extends Component {
     ]
   }
 
-  renderAdditionalCells(pullRequest){
+  renderAdditionalCells(prrr){
     return [
       <td key="actions">
-        <Button onClick={_ => claimPullRequestReviewRequest(pullRequest.id)}>
+        <Button onClick={_ => claimPullRequestReviewRequest(prrr.id)}>
           Claim
         </Button>
       </td>,
@@ -27,16 +32,17 @@ export default class PendingPullRequests extends Component {
   }
 
   render(){
-    const pullRequests = this.props.pullRequests
+    const pullRequestReviewRequests = this.props.pullRequestReviewRequests
       .filter(pullRequest => typeof pullRequest.claimed_by !== 'number')
       .sort((a, b) =>
         moment(b.created_at).valueOf() -
         moment(a.created_at).valueOf()
       )
 
-    return <PullRequestsTable
-      pullRequests={pullRequests}
+    return <PullRequestReviewRequestsTable
+      className="PendingPullRequestReviewRequests"
       currentUser={this.props.currentUser}
+      pullRequestReviewRequests={pullRequestReviewRequests}
       renderAdditionalHeaders={this.renderAdditionalHeaders}
       renderAdditionalCells={this.renderAdditionalCells}
     />

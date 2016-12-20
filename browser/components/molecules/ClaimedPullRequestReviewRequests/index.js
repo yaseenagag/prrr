@@ -3,13 +3,13 @@ import moment from 'moment'
 import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
-import PullRequestsTable from '../PullRequestsTable'
+import PullRequestReviewRequestsTable from '../PullRequestReviewRequestsTable'
 import unclaimPullRequestReviewRequest from '../../../actions/unclaimPullRequestReviewRequest'
 
-export default class ClaimedPullRequests extends Component {
+export default class ClaimedPullRequestReviewRequests extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
-    pullRequests: PropTypes.array.isRequired,
+    pullRequestReviewRequests: PropTypes.array.isRequired,
   }
 
   renderAdditionalHeaders(){
@@ -19,12 +19,12 @@ export default class ClaimedPullRequests extends Component {
     ]
   }
 
-  renderAdditionalCells = (pullRequest) => {
+  renderAdditionalCells = (prrr) => {
     const { currentUser } = this.props
-    const claimedByCurrentUser = pullRequest.claimed_by === currentUser.github_id
+    const claimedByCurrentUser = prrr.claimed_by === currentUser.github_id
     const unclaimButton = claimedByCurrentUser ?
       <Button
-        onClick={_ => unclaimPullRequestReviewRequest(pullRequest.id)}
+        onClick={_ => unclaimPullRequestReviewRequest(prrr.id)}
       >
         Unclaim
       </Button>
@@ -33,26 +33,26 @@ export default class ClaimedPullRequests extends Component {
 
     return [
       <td key="claimed">
-        <span>by {claimedByCurrentUser ? 'you' : pullRequest.claimed_by}</span>
+        <span>by {claimedByCurrentUser ? 'you' : prrr.claimed_by}</span>
         &nbsp;
-        <Date fromNow date={pullRequest.claimed_at} />
+        <Date fromNow date={prrr.claimed_at} />
       </td>,
       <td key="actions">{unclaimButton}</td>,
     ]
   }
 
   render(){
-    const pullRequests = this.props.pullRequests
-      .filter(pullRequest => typeof pullRequest.claimed_by === 'number')
+    const pullRequestReviewRequests = this.props.pullRequestReviewRequests
+      .filter(prrr => typeof prrr.claimed_by === 'number')
       .sort((a, b) =>
         moment(a.claimed_at).valueOf() -
         moment(b.claimed_at).valueOf()
       )
 
-    return <PullRequestsTable
-      className="ClaimedPullRequests"
+    return <PullRequestReviewRequestsTable
+      className="ClaimedPullRequestReviewRequests"
       currentUser={this.props.currentUser}
-      pullRequests={pullRequests}
+      pullRequestReviewRequests={pullRequestReviewRequests}
       renderAdditionalHeaders={this.renderAdditionalHeaders}
       renderAdditionalCells={this.renderAdditionalCells}
     />

@@ -5,7 +5,7 @@ export default function loadPullRequestReviewRequests() {
   return request('get', '/api/pull-request-review-requests')
     .then(response => {
       state.set({
-        pullRequests: response.json,
+        pullRequestReviewRequests: response.json,
         loadPullRequestReviewRequestsError: null,
       })
     })

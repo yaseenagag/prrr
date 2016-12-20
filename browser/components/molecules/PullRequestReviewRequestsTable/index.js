@@ -5,10 +5,10 @@ import Button from '../../atoms/Button'
 import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
 import './index.sass'
 
-export default class PullRequestsTable extends Component {
+export default class PullRequestReviewRequestsTable extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
-    pullRequests: PropTypes.array.isRequired,
+    pullRequestReviewRequests: PropTypes.array.isRequired,
     renderAdditionalHeaders: PropTypes.func.isRequired,
     renderAdditionalCells: PropTypes.func.isRequired,
   }
@@ -16,32 +16,32 @@ export default class PullRequestsTable extends Component {
   render(){
     const {
       currentUser,
-      pullRequests,
+      pullRequestReviewRequests,
       renderAdditionalCells,
       renderAdditionalHeaders,
     } = this.props
-    const rows = pullRequests.map(pullRequest => {
-      const requrestByCurrentUser = pullRequest.requested_by === currentUser.github_id
-      const href = `https://github.com/${pullRequest.owner}/${pullRequest.repo}/pull/${pullRequest.number}`
-      return <tr key={pullRequest.id}>
+    const rows = pullRequestReviewRequests.map(prrr => {
+      const requrestByCurrentUser = prrr.requested_by === currentUser.github_id
+      const href = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
+      return <tr key={prrr.id}>
         <td>
           <Link href={href} target="_blank">
-            {pullRequest.owner}/{pullRequest.repo}
+            {prrr.owner}/{prrr.repo}
           </Link>
           &nbsp;
           <Link href={href} target="_blank">
-            {pullRequest.number}
+            {prrr.number}
           </Link>
         </td>
         <td>
-          <span>by {requrestByCurrentUser ? 'you' : pullRequest.requested_by}</span>
+          <span>by {requrestByCurrentUser ? 'you' : prrr.requested_by}</span>
           &nbsp;
-          <Date fromNow date={pullRequest.created_at} />
+          <Date fromNow date={prrr.created_at} />
         </td>
-        {renderAdditionalCells(pullRequest)}
+        {renderAdditionalCells(prrr)}
       </tr>
     })
-    return <table className="PullRequestsTable">
+    return <table className={`PullRequestReviewRequestsTable ${this.props.className||''}`}>
       <thead>
         <tr>
           <th>Pull Request</th>
