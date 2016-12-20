@@ -6,7 +6,8 @@
   "scripts": {
     "test": "webappatron test",
     "start": "webappatron start",
-    "build": "webappatron build"
+    "build": "webappatron build",
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
   "author": "",
