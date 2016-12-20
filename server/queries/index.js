@@ -41,7 +41,7 @@ export default class Queries {
     return knex
       .select('*')
       .from('users')
-      .where('github_id', pullRequestReviewRequest.requested_by)
+      .where('github_username', pullRequestReviewRequest.requested_by)
       .first()
   }
 

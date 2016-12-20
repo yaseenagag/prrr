@@ -17,8 +17,8 @@ exports.up = knex =>
       table.string('owner').notNullable()
       table.string('repo').notNullable()
       table.integer('number').notNullable()
-      table.integer('requested_by').notNullable() // github_id
-      table.integer('claimed_by') // github_id
+      table.string('requested_by').notNullable() // github_username
+      table.string('claimed_by') // github_username
       table.timestamp('claimed_at')
       table.timestamps()
       table.unique(['owner', 'repo', 'number'])

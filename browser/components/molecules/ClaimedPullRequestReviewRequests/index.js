@@ -21,7 +21,7 @@ export default class ClaimedPullRequestReviewRequests extends Component {
 
   renderAdditionalCells = (prrr) => {
     const { currentUser } = this.props
-    const claimedByCurrentUser = prrr.claimed_by === currentUser.github_id
+    const claimedByCurrentUser = prrr.claimed_by === currentUser.github_username
     const unclaimButton = claimedByCurrentUser ?
       <Button
         onClick={_ => unclaimPullRequestReviewRequest(prrr.id)}
@@ -43,7 +43,7 @@ export default class ClaimedPullRequestReviewRequests extends Component {
 
   render(){
     const pullRequestReviewRequests = this.props.pullRequestReviewRequests
-      .filter(prrr => typeof prrr.claimed_by === 'number')
+      .filter(prrr => prrr.claimed_by)
       .sort((a, b) =>
         moment(a.claimed_at).valueOf() -
         moment(b.claimed_at).valueOf()

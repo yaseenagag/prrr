@@ -21,7 +21,7 @@ export default class PullRequestReviewRequestsTable extends Component {
       renderAdditionalHeaders,
     } = this.props
     const rows = pullRequestReviewRequests.map(prrr => {
-      const requrestByCurrentUser = prrr.requested_by === currentUser.github_id
+      const requrestByCurrentUser = prrr.requested_by === currentUser.github_username
       const href = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
       return <tr key={prrr.id}>
         <td>

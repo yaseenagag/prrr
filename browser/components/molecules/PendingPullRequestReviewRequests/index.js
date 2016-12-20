@@ -37,7 +37,7 @@ export default class PendingPullRequestReviewRequests extends Component {
 
   render(){
     const pullRequestReviewRequests = this.props.pullRequestReviewRequests
-      .filter(pullRequest => typeof pullRequest.claimed_by !== 'number')
+      .filter(pullRequest => !pullRequest.claimed_by)
       .sort((a, b) =>
         moment(b.created_at).valueOf() -
         moment(a.created_at).valueOf()

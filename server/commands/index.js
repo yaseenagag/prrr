@@ -66,7 +66,7 @@ export default class Commands {
             owner,
             repo,
             number,
-            requested_by: this.currentUser.github_id,
+            requested_by: this.currentUser.github_username,
             created_at: new Date,
             updated_at: new Date,
           })
@@ -116,7 +116,7 @@ export default class Commands {
     return this.knex
       .table('pull_request_review_requests')
       .update({
-        claimed_by: this.currentUser.github_id,
+        claimed_by: this.currentUser.github_username,
         claimed_at: new Date,
         updated_at: new Date,
       })
