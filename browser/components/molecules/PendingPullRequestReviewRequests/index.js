@@ -10,9 +10,13 @@ export default class PendingPullRequestReviewRequests extends Component {
     pullRequestReviewRequests: PropTypes.array.isRequired,
   }
 
-  claimPullRequestReviewRequest(){
-    // var win = window.open(url, '_blank');
-    // win.focus();
+  claimPullRequestReviewRequest(prrr){
+    claimPullRequestReviewRequest(prrr.id)
+      .then(_ => {
+        const url = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
+        const popup = window.open(url, '_blank')
+        if (popup) popup.focus()
+      })
   }
 
   renderAdditionalHeaders(){
@@ -21,10 +25,10 @@ export default class PendingPullRequestReviewRequests extends Component {
     ]
   }
 
-  renderAdditionalCells(prrr){
+  renderAdditionalCells = (prrr) => {
     return [
       <td key="actions">
-        <Button onClick={_ => claimPullRequestReviewRequest(prrr.id)}>
+        <Button onClick={_ => this.claimPullRequestReviewRequest(prrr)}>
           Claim
         </Button>
       </td>,
