@@ -1,41 +1,52 @@
 import React, { Component, PropTypes } from 'react'
 import Link from '../../atoms/Link'
+import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import claimPullRequest from '../../../actions/claimPullRequest'
 import './index.sass'
 
 export default class PullRequestsTable extends Component {
   static propTypes = {
+    currentUser: PropTypes.object.isRequired,
     pullRequests: PropTypes.array.isRequired,
-    renderActions: PropTypes.func.isRequired,
+    renderAdditionalHeaders: PropTypes.func.isRequired,
+    renderAdditionalCells: PropTypes.func.isRequired,
   }
 
   render(){
-    const { pullRequests, renderActions } = this.props
+    const {
+      currentUser,
+      pullRequests,
+      renderAdditionalCells,
+      renderAdditionalHeaders,
+    } = this.props
     const rows = pullRequests.map(pullRequest => {
+      const requrestByCurrentUser = pullRequest.requested_by === currentUser.github_id
       const href = `https://github.com/${pullRequest.repository}/pull/${pullRequest.number}`
       return <tr key={pullRequest.id}>
         <td>
-          <Link href={href} target="_blank">{pullRequest.repository}</Link>
+          <Link href={href} target="_blank">
+            {pullRequest.repository}
+          </Link>
+          &nbsp;
+          <Link href={href} target="_blank">
+            {pullRequest.number}
+          </Link>
         </td>
         <td>
-          <Link href={href} target="_blank">{pullRequest.number}</Link>
+          <span>by {requrestByCurrentUser ? 'you' : pullRequest.requested_by}</span>
+          &nbsp;
+          <Date fromNow date={pullRequest.created_at} />
         </td>
-        <td>
-          {pullRequest.requested_by}
-        </td>
-        <td>
-          {renderActions(pullRequest)}
-        </td>
+        {renderAdditionalCells(pullRequest)}
       </tr>
     })
     return <table className="PullRequestsTable">
       <thead>
         <tr>
-          <th>Repository</th>
-          <th>Number</th>
-          <th>Requestor</th>
-          <th></th>
+          <th>Pull Request</th>
+          <th>Requested</th>
+          {renderAdditionalHeaders()}
         </tr>
       </thead>
       <tbody>

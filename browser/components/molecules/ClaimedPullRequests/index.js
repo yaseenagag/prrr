@@ -1,45 +1,60 @@
 import React, { Component, PropTypes } from 'react'
+import moment from 'moment'
 import Link from '../../atoms/Link'
+import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import PullRequestsTable from '../PullRequestsTable'
 import unclaimPullRequest from '../../../actions/unclaimPullRequest'
 
 export default class ClaimedPullRequests extends Component {
   static propTypes = {
+    currentUser: PropTypes.object.isRequired,
     pullRequests: PropTypes.array.isRequired,
   }
 
-  unclaim = (pullRequest) => {
-    unclaimPullRequest(pullRequest.id)
-      .then(response => {
-        // debugger
-      })
-      .catch(error => {
-        console.error(error)
-        console.dir(error)
-        // debugger
-      })
+  renderAdditionalHeaders(){
+    return [
+      <th key="claimed">Claimed</th>,
+      <th key="actions">Actions</th>,
+    ]
   }
 
-  renderActions = (pullRequest) => {
-    return <div>
-      <span>{pullRequest.claimed_by}</span>
+  renderAdditionalCells = (pullRequest) => {
+    const { currentUser } = this.props
+    const claimedByCurrentUser = pullRequest.claimed_by === currentUser.github_id
+    const unclaimButton = claimedByCurrentUser ?
       <Button
-        onClick={event => this.unclaim(pullRequest)}
+        onClick={_ => unclaimPullRequest(pullRequest.id)}
       >
         Unclaim
       </Button>
-    </div>
+    :
+      null
+
+    return [
+      <td key="claimed">
+        <span>by {claimedByCurrentUser ? 'you' : pullRequest.claimed_by}</span>
+        &nbsp;
+        <Date fromNow date={pullRequest.claimed_at} />
+      </td>,
+      <td key="actions">{unclaimButton}</td>,
+    ]
   }
 
   render(){
     const pullRequests = this.props.pullRequests
       .filter(pullRequest => typeof pullRequest.claimed_by === 'number')
+      .sort((a, b) =>
+        moment(a.claimed_at).valueOf() -
+        moment(b.claimed_at).valueOf()
+      )
 
     return <PullRequestsTable
       className="ClaimedPullRequests"
+      currentUser={this.props.currentUser}
       pullRequests={pullRequests}
-      renderActions={this.renderActions}
+      renderAdditionalHeaders={this.renderAdditionalHeaders}
+      renderAdditionalCells={this.renderAdditionalCells}
     />
   }
 }

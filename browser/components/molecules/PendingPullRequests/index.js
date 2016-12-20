@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
 import PullRequestsTable from '../PullRequestsTable'
@@ -9,33 +10,35 @@ export default class PendingPullRequests extends Component {
     pullRequests: PropTypes.array.isRequired,
   }
 
-  claim = (pullRequest) => {
-    claimPullRequest(pullRequest.id)
-      .then(response => {
-        // debugger
-      })
-      .catch(error => {
-        console.error(error)
-        console.dir(error)
-        // debugger
-      })
+  renderAdditionalHeaders(){
+    return [
+      <th key="actions">Actions</th>,
+    ]
   }
 
-  renderActions = (pullRequest) => {
-    return <Button
-      onClick={event => this.claim(pullRequest)}
-    >
-      Claim
-    </Button>
+  renderAdditionalCells(pullRequest){
+    return [
+      <td key="actions">
+        <Button onClick={_ => claimPullRequest(pullRequest.id)}>
+          Claim
+        </Button>
+      </td>,
+    ]
   }
 
   render(){
     const pullRequests = this.props.pullRequests
       .filter(pullRequest => typeof pullRequest.claimed_by !== 'number')
+      .sort((a, b) =>
+        moment(b.created_at).valueOf() -
+        moment(a.created_at).valueOf()
+      )
 
     return <PullRequestsTable
       pullRequests={pullRequests}
-      renderActions={this.renderActions}
+      currentUser={this.props.currentUser}
+      renderAdditionalHeaders={this.renderAdditionalHeaders}
+      renderAdditionalCells={this.renderAdditionalCells}
     />
   }
 }

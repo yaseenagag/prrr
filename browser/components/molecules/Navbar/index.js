@@ -16,12 +16,12 @@ export default class Navbar extends Component {
       <div>
         <Button type={false} href="/">Prrr</Button>
         &nbsp;
-        <Button href="/request">Request Review</Button>
+        <Button type="transparent" href="/request">Request Review</Button>
       </div>
       <div>
         <span>{user.name}</span>
         <Avatar user={user} />
-        <Button onClick={logout}>Logout</Button>
+        <Button type="transparent" onClick={logout}>Logout</Button>
       </div>
     </div>
   }
