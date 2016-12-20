@@ -13,8 +13,10 @@ render(
 
 import state from './state'
 import moment from 'moment'
+import request from './request'
 window.DEBUG = {
   state,
   React,
   moment,
+  request,
 }
