@@ -1,4 +1,6 @@
-require('dotenv').load()
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+if (process.env.NODE_ENV === 'development')
+  require('dotenv').load()
 
 import path from 'path'
 import express from 'express'
