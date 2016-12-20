@@ -4,7 +4,7 @@ import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import PullRequestsTable from '../PullRequestsTable'
-import unclaimPullRequest from '../../../actions/unclaimPullRequest'
+import unclaimPullRequestReviewRequest from '../../../actions/unclaimPullRequestReviewRequest'
 
 export default class ClaimedPullRequests extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ export default class ClaimedPullRequests extends Component {
     const claimedByCurrentUser = pullRequest.claimed_by === currentUser.github_id
     const unclaimButton = claimedByCurrentUser ?
       <Button
-        onClick={_ => unclaimPullRequest(pullRequest.id)}
+        onClick={_ => unclaimPullRequestReviewRequest(pullRequest.id)}
       >
         Unclaim
       </Button>

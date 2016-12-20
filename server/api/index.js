@@ -22,17 +22,18 @@ router.post('/logout', (req, res, next) => {
 });
 
 
-router.get('/pull-requests', (req, res, next) => {
-  req.queries.pullRequests()
-    .then(pullRequests => {
-      res.json(pullRequests)
+router.get('/pull-request-review-requests', (req, res, next) => {
+  req.queries.getPullRequestReviewRequests()
+    .then(pullRequestReviewRequests => {
+      res.json(pullRequestReviewRequests)
     })
     .catch(next)
 });
 
-router.post('/pull-requests', (req, res, next) => {
-  req.commands.addPullRequest({
-    repository: req.body.repository,
+router.post('/pull-request-review-requests', (req, res, next) => {
+  req.commands.createPullRequestReviewRequest({
+    owner: req.body.owner,
+    repo: req.body.repo,
     number: Number(req.body.number),
   })
     .then(pullRequest => {
@@ -41,18 +42,18 @@ router.post('/pull-requests', (req, res, next) => {
     .catch(next)
 });
 
-router.post('/pull-requests/:pullRequestId/claim', (req, res, next) => {
+router.post('/pull-request-review-requests/:pullRequestId/claim', (req, res, next) => {
   const { pullRequestId } = req.params
-  req.commands.claimPullRequest(pullRequestId)
+  req.commands.claimPullRequestReviewRequest(pullRequestId)
     .then(pullRequest => {
       res.json(pullRequest)
     })
     .catch(next)
 });
 
-router.post('/pull-requests/:pullRequestId/unclaim', (req, res, next) => {
+router.post('/pull-request-review-requests/:pullRequestId/unclaim', (req, res, next) => {
   const { pullRequestId } = req.params
-  req.commands.unclaimPullRequest(pullRequestId)
+  req.commands.unclaimPullRequestReviewRequest(pullRequestId)
     .then(pullRequest => {
       res.json(pullRequest)
     })

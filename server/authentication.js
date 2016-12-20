@@ -11,10 +11,10 @@ passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK,
+    scope: ['repo'],
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log('GITHUB LOGIN?', accessToken, refreshToken, profile)
-    new Commands().findOrCreateUserFromGithubProfile(profile)
+    new Commands().findOrCreateUserFromGithubProfile({accessToken, refreshToken, profile})
       .then(user => {
         cb(undefined, user);
       })

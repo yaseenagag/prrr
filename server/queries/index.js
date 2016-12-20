@@ -1,16 +1,13 @@
 import knex from '../knex'
+import Github from '../Github'
 
 export default class Queries {
 
   constructor(currentUser, _knex=knex){
     this.currentUser = currentUser
     this.knex = _knex
-  }
-
-  users(){
-    return this.knex
-      .select('*')
-      .from('users')
+    if (this.currentUser)
+      this.github = new Github(this.currentUser.github_access_token)
   }
 
   getUserByGithubId(githubId){
@@ -21,11 +18,23 @@ export default class Queries {
       .first()
   }
 
-  pullRequests(){
+  getPullRequestReviewRequests(){
     return this.knex
       .select('*')
-      .from('pull_requests')
+      .from('pull_request_review_requests')
       .orderBy('created_at', 'asc')
+  }
+
+  getPullRequestReviewRequestById(pullRequestReviewRequestId){
+    return this.knex
+      .select('*')
+      .from('pull_request_review_requests')
+      .where('id', pullRequestReviewRequestId)
+      .first()
+  }
+
+  getPullRequest({owner, repo, number}){
+    return this.github.pullRequests.get({owner, repo, number})
   }
 
 }

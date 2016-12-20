@@ -2,20 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import Button from '../atoms/Button'
 import Layout from '../molecules/Layout'
 import InspectObject from '../utils/InspectObject'
-import addPullRequest from '../../actions/addPullRequest'
+import createPullRequestReviewRequest from '../../actions/createPullRequestReviewRequest'
 
 export default class RequestReviewPage extends Component {
   render(){
-    const { session, pullRequests, addPullRequestError } = this.props
+    const { session, pullRequests } = this.props
     return <Layout className="HomePage" session={session}>
       <h1>Request Review</h1>
-      <AddPullRequestForm addPullRequestError={addPullRequestError} />
+      <CreatePullRequestReviewRequestForm />
     </Layout>
   }
 }
 
 
-class AddPullRequestForm extends Component {
+class CreatePullRequestReviewRequestForm extends Component {
 
   static contextTypes = {
     redirectTo: PropTypes.func.isRequired,
@@ -26,8 +26,10 @@ class AddPullRequestForm extends Component {
     this.state = {
       url: '',
       error: null,
-      repository: null,
+      owner: null,
+      repo: null,
       number: null,
+      creating: false,
     }
   }
 
@@ -37,31 +39,35 @@ class AddPullRequestForm extends Component {
 
   onChange = () => {
     const url = this.refs.link.value
-    const { error, repository, number } = parsePullRequestURL(url)
-    this.setState({url, error, repository, number})
+    const { error, owner, repo, number } = parsePullRequestURL(url)
+    this.setState({url, error, owner, repo, number})
   }
 
-  addPullRequest = (event) => {
+  createPullRequestReviewRequest = (event) => {
     this.onChange()
     event.preventDefault()
-    const { repository, number } = this.state
-    console.log({ repository, number })
-    addPullRequest({repository, number})
+    const { owner, repo, number } = this.state
+    this.setState({creating: true})
+    createPullRequestReviewRequest({owner, repo, number})
       .then(pullRequest => {
+        this.setState({creating: false})
         this.context.redirectTo('/')
       })
       .catch(error => {
-        this.setState({error})
+        this.setState({error, creating: false})
       })
   }
 
   render(){
-    const { url, error, repository, number} = this.state
+    const { creating, url, error, owner, repo, number} = this.state
+    if (creating) return <div>Creating Pull Request Review Request...</div>
+
     let errorMessage = error && error.message
     if (errorMessage === 'duplicate')
       errorMessage = 'This pull request has allready been added'
 
-    return <form onSubmit={this.addPullRequest}>
+
+    return <form onSubmit={this.createPullRequestReviewRequest}>
       {errorMessage && <h2>ERROR: {errorMessage}</h2>}
       <div>
         <input
@@ -72,7 +78,8 @@ class AddPullRequestForm extends Component {
           onBlur={this.onChange}
         />
       </div>
-      <div>repository: {repository}</div>
+      <div>owner: {owner}</div>
+      <div>repo: {repo}</div>
       <div>number: {number}</div>
       <div>
         <input type="submit" value="add" />
@@ -82,7 +89,7 @@ class AddPullRequestForm extends Component {
 }
 
 
-const GITHUB_PULL_REQUEST_REGEXP = /github.com\/([^\/]+\/[^\/]+)\/pull\/(\d+)/
+const GITHUB_PULL_REQUEST_REGEXP = /github.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)/
 const parsePullRequestURL = function(url){
   // https://github.com/GuildCrafts/Trossello/pull/147
   const matches = url.match(GITHUB_PULL_REQUEST_REGEXP)
@@ -90,7 +97,8 @@ const parsePullRequestURL = function(url){
     error: 'invalid pull request url'
   }
   return {
-    repository: matches[1],
-    number: Number(matches[2]),
+    owner: matches[1],
+    repo: matches[2],
+    number: Number(matches[3]),
   }
 }

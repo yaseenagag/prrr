@@ -7,7 +7,7 @@ import ClaimedPullRequests from '../molecules/ClaimedPullRequests'
 
 export default class LoggedInHomePage extends Component {
   render(){
-    const { session, pullRequests } = this.props
+    const { session, pullRequests=[] } = this.props
     return <Layout className="HomePage" session={session}>
 
       <h1>Pull Requests Waiting For Review:</h1>

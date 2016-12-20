@@ -3,7 +3,7 @@ import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
 import PullRequestsTable from '../PullRequestsTable'
-import claimPullRequest from '../../../actions/claimPullRequest'
+import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
 
 export default class PendingPullRequests extends Component {
   static propTypes = {
@@ -19,7 +19,7 @@ export default class PendingPullRequests extends Component {
   renderAdditionalCells(pullRequest){
     return [
       <td key="actions">
-        <Button onClick={_ => claimPullRequest(pullRequest.id)}>
+        <Button onClick={_ => claimPullRequestReviewRequest(pullRequest.id)}>
           Claim
         </Button>
       </td>,

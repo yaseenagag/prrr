@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
-import claimPullRequest from '../../../actions/claimPullRequest'
+import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
 import './index.sass'
 
 export default class PullRequestsTable extends Component {
@@ -22,11 +22,11 @@ export default class PullRequestsTable extends Component {
     } = this.props
     const rows = pullRequests.map(pullRequest => {
       const requrestByCurrentUser = pullRequest.requested_by === currentUser.github_id
-      const href = `https://github.com/${pullRequest.repository}/pull/${pullRequest.number}`
+      const href = `https://github.com/${pullRequest.owner}/${pullRequest.repo}/pull/${pullRequest.number}`
       return <tr key={pullRequest.id}>
         <td>
           <Link href={href} target="_blank">
-            {pullRequest.repository}
+            {pullRequest.owner}/{pullRequest.repo}
           </Link>
           &nbsp;
           <Link href={href} target="_blank">
