@@ -30,7 +30,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(user, done) {
   new Queries().getUserByGithubId(user.github_id)
-    .then( user  => done(null, user))
+    .then( user  => done(null, user || false))
     .catch(error => done(error))
 });
 
