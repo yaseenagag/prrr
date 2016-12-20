@@ -2,7 +2,6 @@ import moment from 'moment'
 
 const users = [
   {
-    id: 1,
     email: 'jared@jaredgrippe.com',
     github_id: 8385,
     name: 'Jared Grippe',
@@ -16,7 +15,7 @@ exports.seed = (knex) => {
   const batchInsert = (table, records) => {
     if (table === 'skills' || table === 'users'){
       records.forEach(record =>
-        record.created_at = record.updated_at = weeksAgo(7)
+        record.created_at = record.updated_at = new Date
       )
     }
     return knex

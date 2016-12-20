@@ -25,11 +25,11 @@ passport.use(new GitHubStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, {id: user.id});
+  done(null, {github_id: user.github_id});
 });
 
 passport.deserializeUser(function(user, done) {
-  new Queries().getUserById(user.id)
+  new Queries().getUserByGithubId(user.github_id)
     .then( user  => done(null, user))
     .catch(error => done(error))
 });

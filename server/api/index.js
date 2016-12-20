@@ -7,7 +7,6 @@ const router = new express.Router()
 router.use((req, res, next) => {
   req.queries = new Queries(req.user)
   req.commands = new Commands(req.user)
-  console.log(req.queries)
   next()
 })
 
@@ -36,6 +35,24 @@ router.post('/pull-requests', (req, res, next) => {
     repository: req.body.repository,
     number: Number(req.body.number),
   })
+    .then(pullRequest => {
+      res.json(pullRequest)
+    })
+    .catch(next)
+});
+
+router.post('/pull-requests/:pullRequestId/claim', (req, res, next) => {
+  const { pullRequestId } = req.params
+  req.commands.claimPullRequest(pullRequestId)
+    .then(pullRequest => {
+      res.json(pullRequest)
+    })
+    .catch(next)
+});
+
+router.post('/pull-requests/:pullRequestId/unclaim', (req, res, next) => {
+  const { pullRequestId } = req.params
+  req.commands.unclaimPullRequest(pullRequestId)
     .then(pullRequest => {
       res.json(pullRequest)
     })

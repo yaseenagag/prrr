@@ -56,6 +56,36 @@ export default class Commands {
         throw error
       })
   }
+
+  claimPullRequest(pullRequestId){
+    return this.knex
+      .table('pull_requests')
+      .update({
+        claimed_by: this.currentUser.github_id,
+        claimed_at: new Date,
+        updated_at: new Date,
+      })
+      .where('id', pullRequestId)
+      .whereNull('claimed_by')
+      .whereNull('claimed_at')
+      .returning('*')
+      .then(firstRecord)
+  }
+
+  unclaimPullRequest(pullRequestId){
+    return this.knex
+      .table('pull_requests')
+      .update({
+        claimed_by: null,
+        claimed_at: null,
+        updated_at: new Date,
+      })
+      .where('id', pullRequestId)
+      .whereNotNull('claimed_by')
+      .whereNotNull('claimed_at')
+      .returning('*')
+      .then(firstRecord)
+  }
 }
 
 

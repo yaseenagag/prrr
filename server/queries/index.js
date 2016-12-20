@@ -13,11 +13,11 @@ export default class Queries {
       .from('users')
   }
 
-  getUserById(userId){
+  getUserByGithubId(githubId){
     return this.knex
       .select('*')
       .from('users')
-      .where('id', userId)
+      .where('github_id', githubId)
       .first()
   }
 
