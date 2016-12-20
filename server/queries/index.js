@@ -37,4 +37,12 @@ export default class Queries {
     return this.github.pullRequests.get({owner, repo, number})
   }
 
+  getRequestorForPullRequestReviewRequest(pullRequestReviewRequest){
+    return knex
+      .select('*')
+      .from('users')
+      .where('github_id', pullRequestReviewRequest.requested_by)
+      .first()
+  }
+
 }

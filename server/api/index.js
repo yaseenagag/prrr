@@ -69,17 +69,18 @@ router.use((req, res, next) => {
 });
 
 router.use((error, req, res, next) => {
+  let status = error.code || error.status
+  if (typeof status !== 'number') status = 500
   const stack = process.env.NODE_ENV === 'development'
     ? error.stack
     : null
-  res.status(error.status || 500);
   const json = {
     error: {},
   }
   Object.assign(json.error, error)
   json.error.message = error.message
   json.error.stack = stack
-  res.json(json);
+  res.status(status).json(json);
 });
 
 module.exports = router

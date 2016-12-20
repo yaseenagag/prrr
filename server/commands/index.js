@@ -12,6 +12,10 @@ export default class Commands {
       this.github = new Github(this.currentUser.github_access_token)
   }
 
+  as(user){
+    return new this.constructor(user, this.knex)
+  }
+
   createRecord(table, attributes){
     return this.knex
       .table(table)
@@ -27,9 +31,13 @@ export default class Commands {
 
   findOrCreateUserFromGithubProfile({accessToken, refreshToken, profile}){
     const userAttributes = {
-      name: profile.displayName,
+      name: profile.displayName || profile.username,
       email: profile.emails[0].value,
-      avatar_url: profile.photos[0].value,
+      avatar_url: (
+        profile.photos &&
+        profile.photos[0] &&
+        profile.photos[0].value
+      ),
       github_id: profile.id,
       github_username: profile.username,
       github_access_token: accessToken,
@@ -83,15 +91,24 @@ export default class Commands {
   addCurrentUserToPullRequestRepo(pullRequestReviewRequestId){
     return this.queries.getPullRequestReviewRequestById(pullRequestReviewRequestId)
       .then(pullRequestReviewRequest => {
-        return this.github.repos.addCollaborator({
-          owner:  pullRequestReviewRequest.owner,
-          repo:   pullRequestReviewRequest.repo,
-          username: this.currentUser.github_username,
+        if (this.currentUser.github_username === pullRequestReviewRequest.owner) return true
+        return this.queries.getRequestorForPullRequestReviewRequest(pullRequestReviewRequest)
+        .then(requestor => {
+          const github = this.as(requestor).github
+          return github.repos.checkCollaborator({
+            owner:    pullRequestReviewRequest.owner,
+            repo:     pullRequestReviewRequest.repo,
+            username: this.currentUser.github_username,
+          })
+          .catch(error => {
+            return github.repos.addCollaborator({
+              owner:      pullRequestReviewRequest.owner,
+              repo:       pullRequestReviewRequest.repo,
+              username:   this.currentUser.github_username,
+              permission: 'push',
+            })
+          })
         })
-      })
-      .then(response => {
-        console.log('====== added colab???', response)
-        return response
       })
   }
 
