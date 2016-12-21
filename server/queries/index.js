@@ -18,18 +18,18 @@ export default class Queries {
       .first()
   }
 
-  getPullRequestReviewRequests(){
+  getPrrrs(){
     return this.knex
       .select('*')
       .from('pull_request_review_requests')
       .orderBy('created_at', 'asc')
   }
 
-  getPullRequestReviewRequestById(pullRequestReviewRequestId){
+  getPrrrById(prrrId){
     return this.knex
       .select('*')
       .from('pull_request_review_requests')
-      .where('id', pullRequestReviewRequestId)
+      .where('id', prrrId)
       .first()
   }
 
@@ -37,11 +37,11 @@ export default class Queries {
     return this.github.pullRequests.get({owner, repo, number})
   }
 
-  getRequestorForPullRequestReviewRequest(pullRequestReviewRequest){
+  getRequestorForPrrr(prrr){
     return knex
       .select('*')
       .from('users')
-      .where('github_username', pullRequestReviewRequest.requested_by)
+      .where('github_username', prrr.requested_by)
       .first()
   }
 

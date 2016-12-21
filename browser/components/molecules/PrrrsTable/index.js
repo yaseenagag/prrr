@@ -3,13 +3,13 @@ import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
-import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
+import claimPrrr from '../../../actions/claimPrrr'
 import './index.sass'
 
-export default class PullRequestReviewRequestsTable extends Component {
+export default class PrrrsTable extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
-    pullRequestReviewRequests: PropTypes.array.isRequired,
+    prrrs: PropTypes.array.isRequired,
     renderAdditionalHeaders: PropTypes.func.isRequired,
     renderAdditionalCells: PropTypes.func.isRequired,
   }
@@ -17,11 +17,11 @@ export default class PullRequestReviewRequestsTable extends Component {
   render(){
     const {
       currentUser,
-      pullRequestReviewRequests,
+      prrrs,
       renderAdditionalCells,
       renderAdditionalHeaders,
     } = this.props
-    const rows = pullRequestReviewRequests.map(prrr => {
+    const rows = prrrs.map(prrr => {
       const requrestByCurrentUser = prrr.requested_by === currentUser.github_username
       const href = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
       return <tr key={prrr.id}>
@@ -43,7 +43,7 @@ export default class PullRequestReviewRequestsTable extends Component {
         {renderAdditionalCells(prrr)}
       </tr>
     })
-    return <table className={`PullRequestReviewRequestsTable ${this.props.className||''}`}>
+    return <table className={`PrrrsTable ${this.props.className||''}`}>
       <thead>
         <tr>
           <th>Pull Request</th>

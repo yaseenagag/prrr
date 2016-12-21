@@ -2,16 +2,16 @@ import React, { Component, PropTypes } from 'react'
 import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
-import PullRequestReviewRequestsTable from '../PullRequestReviewRequestsTable'
-import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
+import PrrrsTable from '../PrrrsTable'
+import claimPrrr from '../../../actions/claimPrrr'
 
-export default class PendingPullRequestReviewRequests extends Component {
+export default class PendingPrrrs extends Component {
   static propTypes = {
-    pullRequestReviewRequests: PropTypes.array.isRequired,
+    prrrs: PropTypes.array.isRequired,
   }
 
-  claimPullRequestReviewRequest(prrr){
-    claimPullRequestReviewRequest(prrr.id)
+  claimPrrr(prrr){
+    claimPrrr(prrr.id)
       .then(_ => {
         const url = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
         const popup = window.open(url, '_blank')
@@ -28,7 +28,7 @@ export default class PendingPullRequestReviewRequests extends Component {
   renderAdditionalCells = (prrr) => {
     return [
       <td key="actions">
-        <Button onClick={_ => this.claimPullRequestReviewRequest(prrr)}>
+        <Button onClick={_ => this.claimPrrr(prrr)}>
           Claim
         </Button>
       </td>,
@@ -36,17 +36,17 @@ export default class PendingPullRequestReviewRequests extends Component {
   }
 
   render(){
-    const pullRequestReviewRequests = this.props.pullRequestReviewRequests
-      .filter(pullRequest => !pullRequest.claimed_by)
+    const prrrs = this.props.prrrs
+      .filter(prrr => !prrr.claimed_by)
       .sort((a, b) =>
         moment(b.created_at).valueOf() -
         moment(a.created_at).valueOf()
       )
 
-    return <PullRequestReviewRequestsTable
-      className="PendingPullRequestReviewRequests"
+    return <PrrrsTable
+      className="PendingPrrrs"
       currentUser={this.props.currentUser}
-      pullRequestReviewRequests={pullRequestReviewRequests}
+      prrrs={prrrs}
       renderAdditionalHeaders={this.renderAdditionalHeaders}
       renderAdditionalCells={this.renderAdditionalCells}
     />

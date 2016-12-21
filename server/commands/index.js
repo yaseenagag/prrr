@@ -50,7 +50,7 @@ export default class Commands {
       .then(user => user ? user : this.createUser(userAttributes))
   }
 
-  createPullRequestReviewRequest({owner, repo, number}){
+  createPrrr({owner, repo, number}){
     console.log('========= create PRRR', {owner, repo, number})
     return this.github.pullRequests.get({owner, repo, number})
       .catch(originalError => {
@@ -88,22 +88,22 @@ export default class Commands {
 
   }
 
-  addCurrentUserToPullRequestRepo(pullRequestReviewRequestId){
-    return this.queries.getPullRequestReviewRequestById(pullRequestReviewRequestId)
-      .then(pullRequestReviewRequest => {
-        if (this.currentUser.github_username === pullRequestReviewRequest.owner) return true
-        return this.queries.getRequestorForPullRequestReviewRequest(pullRequestReviewRequest)
+  addCurrentUserToPrrrRepo(prrrId){
+    return this.queries.getPrrrById(prrrId)
+      .then(prrr => {
+        if (this.currentUser.github_username === prrr.owner) return true
+        return this.queries.getRequestorForPrrr(prrr)
         .then(requestor => {
           const github = this.as(requestor).github
           return github.repos.checkCollaborator({
-            owner:    pullRequestReviewRequest.owner,
-            repo:     pullRequestReviewRequest.repo,
+            owner:    prrr.owner,
+            repo:     prrr.repo,
             username: this.currentUser.github_username,
           })
           .catch(error => {
             return github.repos.addCollaborator({
-              owner:      pullRequestReviewRequest.owner,
-              repo:       pullRequestReviewRequest.repo,
+              owner:      prrr.owner,
+              repo:       prrr.repo,
               username:   this.currentUser.github_username,
               permission: 'push',
             })
@@ -112,7 +112,7 @@ export default class Commands {
       })
   }
 
-  markPullRequestAsClaimed(pullRequestReviewRequestId){
+  markPullRequestAsClaimed(prrrId){
     return this.knex
       .table('pull_request_review_requests')
       .update({
@@ -120,19 +120,19 @@ export default class Commands {
         claimed_at: new Date,
         updated_at: new Date,
       })
-      .where('id', pullRequestReviewRequestId)
+      .where('id', prrrId)
       .whereNull('claimed_by')
       .whereNull('claimed_at')
       .returning('*')
       .then(firstRecord)
   }
 
-  claimPullRequestReviewRequest(pullRequestReviewRequestId){
-    return this.addCurrentUserToPullRequestRepo(pullRequestReviewRequestId)
-      .then(_ => this.markPullRequestAsClaimed(pullRequestReviewRequestId))
+  claimPrrr(prrrId){
+    return this.addCurrentUserToPrrrRepo(prrrId)
+      .then(_ => this.markPullRequestAsClaimed(prrrId))
   }
 
-  unclaimPullRequestReviewRequest(pullRequestReviewRequestId){
+  unclaimPrrr(prrrId){
     return this.knex
       .table('pull_request_review_requests')
       .update({
@@ -140,7 +140,7 @@ export default class Commands {
         claimed_at: null,
         updated_at: new Date,
       })
-      .where('id', pullRequestReviewRequestId)
+      .where('id', prrrId)
       .whereNotNull('claimed_by')
       .whereNotNull('claimed_at')
       .returning('*')

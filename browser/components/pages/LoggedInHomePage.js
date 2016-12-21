@@ -2,24 +2,24 @@ import React, { Component } from 'react'
 import Button from '../atoms/Button'
 import Layout from '../molecules/Layout'
 import InspectObject from '../utils/InspectObject'
-import PendingPullRequestReviewRequests from '../molecules/PendingPullRequestReviewRequests'
-import ClaimedPullRequestReviewRequests from '../molecules/ClaimedPullRequestReviewRequests'
+import PendingPrrrs from '../molecules/PendingPrrrs'
+import ClaimedPrrrs from '../molecules/ClaimedPrrrs'
 
 export default class LoggedInHomePage extends Component {
   render(){
-    const { session, pullRequestReviewRequests=[] } = this.props
+    const { session, prrrs=[] } = this.props
     return <Layout className="HomePage" session={session}>
 
       <h1>Pull Requests Waiting For Review:</h1>
-      <PendingPullRequestReviewRequests
+      <PendingPrrrs
         currentUser={session.user}
-        pullRequestReviewRequests={pullRequestReviewRequests}
+        prrrs={prrrs}
       />
 
       <h1>Claimed Pull Requests:</h1>
-      <ClaimedPullRequestReviewRequests
+      <ClaimedPrrrs
         currentUser={session.user}
-        pullRequestReviewRequests={pullRequestReviewRequests}
+        prrrs={prrrs}
       />
     </Layout>
   }

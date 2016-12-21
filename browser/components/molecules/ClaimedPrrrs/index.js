@@ -4,13 +4,13 @@ import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
-import PullRequestReviewRequestsTable from '../PullRequestReviewRequestsTable'
-import unclaimPullRequestReviewRequest from '../../../actions/unclaimPullRequestReviewRequest'
+import PrrrsTable from '../PrrrsTable'
+import unclaimPrrr from '../../../actions/unclaimPrrr'
 
-export default class ClaimedPullRequestReviewRequests extends Component {
+export default class ClaimedPrrrs extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
-    pullRequestReviewRequests: PropTypes.array.isRequired,
+    prrrs: PropTypes.array.isRequired,
   }
 
   renderAdditionalHeaders(){
@@ -25,7 +25,7 @@ export default class ClaimedPullRequestReviewRequests extends Component {
     const claimedByCurrentUser = prrr.claimed_by === currentUser.github_username
     const unclaimButton = claimedByCurrentUser ?
       <Button
-        onClick={_ => unclaimPullRequestReviewRequest(prrr.id)}
+        onClick={_ => unclaimPrrr(prrr.id)}
       >
         Unclaim
       </Button>
@@ -44,17 +44,17 @@ export default class ClaimedPullRequestReviewRequests extends Component {
   }
 
   render(){
-    const pullRequestReviewRequests = this.props.pullRequestReviewRequests
+    const prrrs = this.props.prrrs
       .filter(prrr => prrr.claimed_by)
       .sort((a, b) =>
         moment(a.claimed_at).valueOf() -
         moment(b.claimed_at).valueOf()
       )
 
-    return <PullRequestReviewRequestsTable
-      className="ClaimedPullRequestReviewRequests"
+    return <PrrrsTable
+      className="ClaimedPrrrs"
       currentUser={this.props.currentUser}
-      pullRequestReviewRequests={pullRequestReviewRequests}
+      prrrs={prrrs}
       renderAdditionalHeaders={this.renderAdditionalHeaders}
       renderAdditionalCells={this.renderAdditionalCells}
     />

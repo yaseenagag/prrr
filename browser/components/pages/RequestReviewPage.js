@@ -2,20 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import Button from '../atoms/Button'
 import Layout from '../molecules/Layout'
 import InspectObject from '../utils/InspectObject'
-import createPullRequestReviewRequest from '../../actions/createPullRequestReviewRequest'
+import createPrrr from '../../actions/createPrrr'
 
 export default class RequestReviewPage extends Component {
   render(){
-    const { session, pullRequests } = this.props
+    const { session } = this.props
     return <Layout className="HomePage" session={session}>
       <h1>Request Review</h1>
-      <CreatePullRequestReviewRequestForm />
+      <CreatePrrrForm />
     </Layout>
   }
 }
 
 
-class CreatePullRequestReviewRequestForm extends Component {
+class CreatePrrrForm extends Component {
 
   static contextTypes = {
     redirectTo: PropTypes.func.isRequired,
@@ -43,13 +43,13 @@ class CreatePullRequestReviewRequestForm extends Component {
     this.setState({url, error, owner, repo, number})
   }
 
-  createPullRequestReviewRequest = (event) => {
+  createPrrr = (event) => {
     this.onChange()
     event.preventDefault()
     const { owner, repo, number } = this.state
     this.setState({creating: true})
-    createPullRequestReviewRequest({owner, repo, number})
-      .then(pullRequest => {
+    createPrrr({owner, repo, number})
+      .then(_ => {
         this.setState({creating: false})
         this.context.redirectTo('/')
       })
@@ -67,7 +67,7 @@ class CreatePullRequestReviewRequestForm extends Component {
       errorMessage = 'This pull request has allready been added'
 
 
-    return <form onSubmit={this.createPullRequestReviewRequest}>
+    return <form onSubmit={this.createPrrr}>
       {errorMessage && <h2>ERROR: {errorMessage}</h2>}
       <div>
         <input
