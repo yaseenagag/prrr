@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
+import GithubUsername from '../../atoms/GithubUsername'
 import claimPullRequestReviewRequest from '../../../actions/claimPullRequestReviewRequest'
 import './index.sass'
 
@@ -34,8 +35,9 @@ export default class PullRequestReviewRequestsTable extends Component {
           </Link>
         </td>
         <td>
-          <span>by {requrestByCurrentUser ? 'you' : prrr.requested_by}</span>
-          &nbsp;
+          <span>by&nbsp;</span>
+          <GithubUsername username={prrr.requested_by} currentUser={currentUser} />
+          <span>&nbsp;</span>
           <Date fromNow date={prrr.created_at} />
         </td>
         {renderAdditionalCells(prrr)}

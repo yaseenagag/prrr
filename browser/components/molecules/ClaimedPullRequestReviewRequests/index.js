@@ -3,6 +3,7 @@ import moment from 'moment'
 import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
+import GithubUsername from '../../atoms/GithubUsername'
 import PullRequestReviewRequestsTable from '../PullRequestReviewRequestsTable'
 import unclaimPullRequestReviewRequest from '../../../actions/unclaimPullRequestReviewRequest'
 
@@ -33,8 +34,9 @@ export default class ClaimedPullRequestReviewRequests extends Component {
 
     return [
       <td key="claimed">
-        <span>by {claimedByCurrentUser ? 'you' : prrr.claimed_by}</span>
-        &nbsp;
+        <span>by&nbsp;</span>
+        <GithubUsername username={prrr.claimed_by} currentUser={currentUser} />
+        <span>&nbsp;</span>
         <Date fromNow date={prrr.claimed_at} />
       </td>,
       <td key="actions">{unclaimButton}</td>,
