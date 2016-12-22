@@ -11,11 +11,13 @@ export default class Button extends Component {
     href: PropTypes.string,
     submit: PropTypes.bool,
     noFocus: PropTypes.bool,
+    disabled: PropTypes.bool,
   };
 
   static defaultProps = {
     submit: false,
     noFocus: false,
+    disabled: false,
   };
 
   render(){
@@ -27,15 +29,20 @@ export default class Button extends Component {
 
     const buttonTypeClassName = type ? `Button-${type}` : ''
     props.className = `Button ${buttonTypeClassName} ${props.className||''}`
+    if (props.disabled) {
+      props.className += ' Button-disabled'
+      props.onClick = event => event.preventDefault()
+    }
 
     if (this.props.submit){
       delete props.href
       props.type = 'submit'
     }
 
-    if (this.props.noFocus){
+    if (props.disabled || this.props.noFocus){
       props.onFocus = event => event.target.blur()
       props.className += ' Button-nofocus'
+      props.tabIndex = '-1'
     }
     return props.href ?
       <Link ref="button" {...props}>{this.props.children}</Link> :
