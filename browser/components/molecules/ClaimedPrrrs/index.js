@@ -23,14 +23,6 @@ export default class ClaimedPrrrs extends Component {
   renderAdditionalCells = (prrr) => {
     const { currentUser } = this.props
     const claimedByCurrentUser = prrr.claimed_by === currentUser.github_username
-    const unclaimButton = claimedByCurrentUser ?
-      <Button
-        onClick={_ => unclaimPrrr(prrr.id)}
-      >
-        Unclaim
-      </Button>
-    :
-      null
 
     return [
       <td key="claimed">
@@ -39,7 +31,11 @@ export default class ClaimedPrrrs extends Component {
         <span>&nbsp;</span>
         <Date fromNow date={prrr.claimed_at} />
       </td>,
-      <td key="actions">{unclaimButton}</td>,
+      <td key="actions">
+        <Button onClick={_ => unclaimPrrr(prrr.id)} disabled={!claimedByCurrentUser}>
+          Unclaim
+        </Button>
+      </td>,
     ]
   }
 

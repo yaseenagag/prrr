@@ -60,6 +60,16 @@ router.post('/pull-request-review-requests/:prrrId/unclaim', (req, res, next) =>
     .catch(next)
 });
 
+
+router.post('/pull-request-review-requests/:prrrId/destroy', (req, res, next) => {
+  const { prrrId } = req.params
+  req.commands.destroyPrrr(prrrId)
+    .then(_ => {
+      res.json()
+    })
+    .catch(next)
+});
+
 // error handlers
 
 router.use((req, res, next) => {

@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import Link from '../../atoms/Link'
+import Icon from '../../atoms/Icon'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
 import claimPrrr from '../../../actions/claimPrrr'
+import destroyPrrr from '../../../actions/destroyPrrr'
 import './index.sass'
 
 export default class PrrrsTable extends Component {
@@ -41,6 +43,11 @@ export default class PrrrsTable extends Component {
           <Date fromNow date={prrr.created_at} />
         </td>
         {renderAdditionalCells(prrr)}
+        <td>
+          <Button onClick={_ => confirmDestroyPrrr(href, prrr)} disabled={!requrestByCurrentUser}>
+            <Icon type="times" />
+          </Button>
+        </td>
       </tr>
     })
     return <table className={`PrrrsTable ${this.props.className||''}`}>
@@ -49,6 +56,7 @@ export default class PrrrsTable extends Component {
           <th>Pull Request</th>
           <th>Requested</th>
           {renderAdditionalHeaders()}
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -56,4 +64,9 @@ export default class PrrrsTable extends Component {
       </tbody>
     </table>
   }
+}
+
+function confirmDestroyPrrr(href, prrr){
+  const message = `Are you sure you want to delete your\n\nPull Request Review Request for\n\n${href}`
+  if (confirm(message)) destroyPrrr(prrr.id)
 }

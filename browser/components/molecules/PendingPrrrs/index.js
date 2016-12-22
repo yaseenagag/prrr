@@ -7,6 +7,7 @@ import claimPrrr from '../../../actions/claimPrrr'
 
 export default class PendingPrrrs extends Component {
   static propTypes = {
+    currentUser: PropTypes.object.isRequired,
     prrrs: PropTypes.array.isRequired,
   }
 
@@ -26,9 +27,11 @@ export default class PendingPrrrs extends Component {
   }
 
   renderAdditionalCells = (prrr) => {
+    const { currentUser } = this.props
+    const disabled = prrr.requested_by === currentUser.github_username
     return [
       <td key="actions">
-        <Button onClick={_ => this.claimPrrr(prrr)}>
+        <Button onClick={_ => this.claimPrrr(prrr)} disabled={disabled}>
           Claim
         </Button>
       </td>,

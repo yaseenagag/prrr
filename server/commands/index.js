@@ -146,6 +146,13 @@ export default class Commands {
       .returning('*')
       .then(firstRecord)
   }
+
+  destroyPrrr(purrId){
+    return this.knex
+      .table('pull_request_review_requests')
+      .where('id', purrId)
+      .del()
+  }
 }
 
 
