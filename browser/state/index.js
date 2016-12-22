@@ -1,6 +1,4 @@
-const value = {
-  initialValue: true,
-};
+const value = {}
 
 const state = {
 
