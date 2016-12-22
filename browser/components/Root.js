@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
-import Router from '../Router'
-
 import state from '../state'
-import loadSession from '../actions/loadSession'
-import loadPrrrs from '../actions/loadPrrrs'
+import '../actions/loadSession'
+import '../actions/startPolingForPrrrs'
+import Router from '../Router'
 import InspectObject from './utils/InspectObject'
-
-loadSession()
-loadPrrrs()
 
 export default class Root extends Component {
 

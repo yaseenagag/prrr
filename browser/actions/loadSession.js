@@ -14,3 +14,5 @@ export default function loadSession() {
       state.set({loadSessionError})
     })
 }
+
+loadSession()
