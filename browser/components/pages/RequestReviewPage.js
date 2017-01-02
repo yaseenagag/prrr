@@ -73,6 +73,7 @@ class CreatePullRequestReviewRequestForm extends Component {
         <input
           type="text"
           ref="link"
+          placeholder="enter PR url here"
           value={url}
           onChange={this.onChange}
           onBlur={this.onChange}
