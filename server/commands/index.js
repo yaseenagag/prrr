@@ -175,7 +175,4 @@ export default class Commands {
   }
 }
 
-
-function firstRecord(records){
-  return records[0]
-}
+const firstRecord = records => records[0]
