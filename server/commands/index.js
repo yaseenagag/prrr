@@ -61,6 +61,20 @@ export default class Commands {
         throw error
       })
       .then(pullRequest =>
+        this.github.repos.checkCollaborator({
+          owner,
+          repo,
+          username: this.currentUser.github_username,
+        })
+          .then( response => pullRequest )
+          .catch( originalError => {
+            const error = new Error(`You are not a collaborator on ${owner}/${repo}`)
+            error.originalError = originalError
+            error.status = 400
+            throw error
+          })
+      )
+      .then(pullRequest =>
         this.knex
           .insert({
             owner,
