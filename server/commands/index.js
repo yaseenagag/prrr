@@ -51,10 +51,8 @@ export default class Commands {
   }
 
   createPrrr({owner, repo, number}){
-    console.log('========= create PRRR', {owner, repo, number})
     return this.github.pullRequests.get({owner, repo, number})
       .catch(originalError => {
-        console.log('ERROR loading PR', originalError)
         const error = new Error('Pull Request Not Found')
         error.originalError = originalError
         error.status = 400
@@ -105,22 +103,30 @@ export default class Commands {
   addCurrentUserToPrrrRepo(prrrId){
     return this.queries.getPrrrById(prrrId)
       .then(prrr => {
-        if (this.currentUser.github_username === prrr.owner) return true
-        return this.queries.getRequestorForPrrr(prrr)
-        .then(requestor => {
-          const github = this.as(requestor).github
-          return github.repos.checkCollaborator({
-            owner:    prrr.owner,
-            repo:     prrr.repo,
-            username: this.currentUser.github_username,
-          })
+        if (this.currentUser.github_username === prrr.owner)
+          return {prrr, ownerUser: this.currentUser}
+
+        return this.queries.getUserByGithubUsername(prrr.owner)
           .catch(error => {
-            return github.repos.addCollaborator({
-              owner:      prrr.owner,
-              repo:       prrr.repo,
-              username:   this.currentUser.github_username,
-              permission: 'push',
-            })
+          })
+          .then(ownerUser => {
+            if (ownerUser) return ({ownerUser, prrr})
+            throw new Error(`unable to add ${this.currentUser.github_username} to ${prrr.owner}/${prrr.repo} because ${prrr.owner} does not have a Prrr account`)
+          })
+      })
+      .then(({ownerUser, prrr}) => {
+        const github = this.as(ownerUser).github
+        return github.repos.checkCollaborator({
+          owner:    prrr.owner,
+          repo:     prrr.repo,
+          username: this.currentUser.github_username,
+        })
+        .catch(error => {
+          return github.repos.addCollaborator({
+            owner:      prrr.owner,
+            repo:       prrr.repo,
+            username:   this.currentUser.github_username,
+            permission: 'push',
           })
         })
       })

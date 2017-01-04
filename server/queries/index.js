@@ -18,6 +18,14 @@ export default class Queries {
       .first()
   }
 
+  getUserByGithubUsername(githubUsername){
+    return this.knex
+      .select('*')
+      .from('users')
+      .where('github_username', githubUsername)
+      .first()
+  }
+
   getPrrrs(){
     return this.knex
       .select('*')
