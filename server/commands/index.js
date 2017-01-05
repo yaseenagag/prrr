@@ -50,9 +50,14 @@ export default class Commands {
       .then(user => user ? user : this.createUser(userAttributes))
   }
 
-  unarchivePrrr(id){
+  reopenPrrr(id){
     return this.knex
-      .update({archived_at: null})
+      .update({
+        archived_at: null,
+        completed_at: null,
+        claimed_by: null,
+        claimed_at: null,
+      })
       .table('pull_request_review_requests')
       .where('id', id)
       .returning('*')
@@ -87,8 +92,8 @@ export default class Commands {
       )
       .then(({prrr, pullRequest}) => {
         if (prrr) {
-          return prrr.archived_at
-            ? this.unarchivePrrr(prrr.id)
+          return prrr.archived_at || prrr.completed_at
+            ? this.reopenPrrr(prrr.id)
             : prrr
         }
         return this.createRecord('pull_request_review_requests',{
