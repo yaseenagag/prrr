@@ -31,6 +31,7 @@ export default class Queries {
       .select('*')
       .from('pull_request_review_requests')
       .orderBy('created_at', 'asc')
+      .where('archived_at', null)
   }
 
   getPrrrById(prrrId){
@@ -38,6 +39,18 @@ export default class Queries {
       .select('*')
       .from('pull_request_review_requests')
       .where('id', prrrId)
+      .first()
+  }
+
+  getPrrrForPullRequest(pullRequest){
+    return this.knex
+      .select('*')
+      .from('pull_request_review_requests')
+      .where({
+        owner: pullRequest.base.repo.owner.login,
+        repo: pullRequest.base.repo.name,
+        number: pullRequest.number,
+      })
       .first()
   }
 
