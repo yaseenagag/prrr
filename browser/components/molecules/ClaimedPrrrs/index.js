@@ -44,8 +44,11 @@ export default class ClaimedPrrrs extends Component {
         </Button>
       </td>,
       <td key="completed">
-        <Button onClick={_=> this.completePrrr(prrr)}>
-          Completed
+        <Button
+          onClick={_=> this.completePrrr(prrr)}
+          disabled={!claimedByCurrentUser}
+        >
+          Complete
         </Button>
       </td>,
     ]
