@@ -43,8 +43,8 @@ export default class ClaimedPrrrs extends Component {
     const prrrs = this.props.prrrs
       .filter(prrr => prrr.claimed_by)
       .sort((a, b) =>
-        moment(a.claimed_at).valueOf() -
-        moment(b.claimed_at).valueOf()
+        moment(b.claimed_at).valueOf() -
+        moment(a.claimed_at).valueOf()
       )
 
     return <PrrrsTable

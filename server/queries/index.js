@@ -30,7 +30,7 @@ export default class Queries {
     return this.knex
       .select('*')
       .from('pull_request_review_requests')
-      .orderBy('created_at', 'asc')
+      .orderBy('created_at', 'desc')
       .where('archived_at', null)
   }
 
