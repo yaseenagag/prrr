@@ -5,7 +5,7 @@ import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
 import claimPrrr from '../../../actions/claimPrrr'
-import destroyPrrr from '../../../actions/destroyPrrr'
+import archivePrrr from '../../../actions/archivePrrr'
 import './index.sass'
 
 export default class PrrrsTable extends Component {
@@ -44,7 +44,7 @@ export default class PrrrsTable extends Component {
         </td>
         {renderAdditionalCells(prrr)}
         <td>
-          <Button onClick={_ => confirmDestroyPrrr(href, prrr)} disabled={!requrestByCurrentUser}>
+          <Button onClick={_ => confirmArchivePrrr(href, prrr)} disabled={!requrestByCurrentUser}>
             <Icon type="times" />
           </Button>
         </td>
@@ -66,7 +66,7 @@ export default class PrrrsTable extends Component {
   }
 }
 
-function confirmDestroyPrrr(href, prrr){
-  const message = `Are you sure you want to delete your\n\nPull Request Review Request for\n\n${href}`
-  if (confirm(message)) destroyPrrr(prrr.id)
+function confirmArchivePrrr(href, prrr){
+  const message = `Are you sure you want to archive your\n\nPull Request Review Request for\n\n${href}`
+  if (confirm(message)) archivePrrr(prrr.id)
 }
