@@ -24,7 +24,7 @@ export default class PrrrsTable extends Component {
       renderAdditionalHeaders,
     } = this.props
     const rows = prrrs.map(prrr => {
-      const requrestByCurrentUser = prrr.requested_by === currentUser.github_username
+      const requestByCurrentUser = prrr.requested_by === currentUser.github_username
       const href = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
       return <tr key={prrr.id}>
         <td>
@@ -44,7 +44,7 @@ export default class PrrrsTable extends Component {
         </td>
         {renderAdditionalCells(prrr)}
         <td>
-          <Button onClick={_ => confirmArchivePrrr(href, prrr)} disabled={!requrestByCurrentUser}>
+          <Button onClick={_ => confirmArchivePrrr(href, prrr)} disabled={!requestByCurrentUser}>
             <Icon type="times" />
           </Button>
         </td>
