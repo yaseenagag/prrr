@@ -50,6 +50,15 @@ export default class Commands {
       .then(user => user ? user : this.createUser(userAttributes))
   }
 
+  unarchivePrrr(id){
+    return this.knex
+      .update({archived_at: null})
+      .table('pull_request_review_requests')
+      .where('id', id)
+      .returning('*')
+      .then(firstRecord)
+  }
+
   createPrrr({owner, repo, number}){
     return this.github.pullRequests.get({owner, repo, number})
       .catch(originalError => {
@@ -64,40 +73,33 @@ export default class Commands {
           repo,
           username: this.currentUser.github_username,
         })
-          .then( response => pullRequest )
-          .catch( originalError => {
-            const error = new Error(`You are not a collaborator on ${owner}/${repo}`)
-            error.originalError = originalError
-            error.status = 400
-            throw error
-          })
+        .catch( originalError => {
+          const error = new Error(`You are not a collaborator on ${owner}/${repo}`)
+          error.originalError = originalError
+          error.status = 400
+          throw error
+        })
+        .then( response => pullRequest )
       )
       .then(pullRequest =>
-        this.knex
-          .insert({
-            owner,
-            repo,
-            number,
-            requested_by: this.currentUser.github_username,
-            created_at: new Date,
-            updated_at: new Date,
-          })
-          .into('pull_request_review_requests')
-          .catch( originalError => {
-            let error = originalError
-            if (error && error.message.includes('duplicate key value violates unique constraint')){
-              error = new Error('duplicate')
-              error.originalError = originalError
-            }
-            error.owner = owner
-            error.repo = repo
-            error.number = number
-            throw error
-          })
+        this.queries.getPrrrForPullRequest(pullRequest)
+          .then(prrr => ({prrr, pullRequest}))
       )
-
-
-
+      .then(({prrr, pullRequest}) => {
+        if (prrr) {
+          return prrr.archived_at
+            ? this.unarchivePrrr(prrr.id)
+            : prrr
+        }
+        return this.createRecord('pull_request_review_requests',{
+          owner,
+          repo,
+          number,
+          requested_by: this.currentUser.github_username,
+          created_at: new Date,
+          updated_at: new Date,
+        })
+      })
   }
 
   addCurrentUserToPrrrRepo(prrrId){
