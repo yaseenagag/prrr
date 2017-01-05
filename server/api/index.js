@@ -70,6 +70,15 @@ router.post('/pull-request-review-requests/:prrrId/archive', (req, res, next) =>
     .catch(next)
 });
 
+router.post('/pull-request-review-requests/:prrrId/complete', (req, res, next) => {
+  const { prrrId } = req.params
+  req.commands.completePrrr(prrrId)
+    .then(_ => {
+      res.json({id: prrrId, complete:true})
+    })
+    .catch(next)
+});
+
 // error handlers
 
 router.use((req, res, next) => {

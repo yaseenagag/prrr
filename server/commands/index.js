@@ -177,6 +177,17 @@ export default class Commands {
       })
       .where('id', purrId)
   }
+
+  completePrrr(prrrId){
+    return this.knex
+    .table('pull_request_review_requests')
+    .update({
+      completed_at: new Date,
+    })
+    .where('id', prrrId)
+    .returning('*')
+    .then(firstRecord)
+  }
 }
 
 const firstRecord = records => records[0]

@@ -31,7 +31,10 @@ export default class Queries {
       .select('*')
       .from('pull_request_review_requests')
       .orderBy('created_at', 'desc')
-      .where('archived_at', null)
+      .where({
+        archived_at: null,
+        completed_at: null,
+      })
   }
 
   getPrrrById(prrrId){

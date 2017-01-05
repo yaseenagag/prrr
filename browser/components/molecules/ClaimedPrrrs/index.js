@@ -6,6 +6,8 @@ import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
 import PrrrsTable from '../PrrrsTable'
 import unclaimPrrr from '../../../actions/unclaimPrrr'
+import completePrrr from '../../../actions/completePrrr'
+
 
 export default class ClaimedPrrrs extends Component {
   static propTypes = {
@@ -13,10 +15,15 @@ export default class ClaimedPrrrs extends Component {
     prrrs: PropTypes.array.isRequired,
   }
 
+  completePrrr(prrr){
+    completePrrr(prrr.id)
+  }
+
   renderAdditionalHeaders(){
     return [
       <th key="claimed">Claimed</th>,
       <th key="actions">Actions</th>,
+      <th key="completed">Completed</th>
     ]
   }
 
@@ -34,6 +41,11 @@ export default class ClaimedPrrrs extends Component {
       <td key="actions">
         <Button onClick={_ => unclaimPrrr(prrr.id)} disabled={!claimedByCurrentUser}>
           Unclaim
+        </Button>
+      </td>,
+      <td key="completed">
+        <Button onClick={_=> this.completePrrr(prrr)}>
+          Completed
         </Button>
       </td>,
     ]
