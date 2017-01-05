@@ -1,6 +1,7 @@
 import knex from '../knex'
 import Queries from '../queries'
 import Github from '../Github'
+import request from 'request-promise'
 
 export default class Commands {
 
@@ -107,21 +108,19 @@ export default class Commands {
       })
   }
 
-  addCurrentUserToPrrrRepo(prrrId){
-    return this.queries.getPrrrById(prrrId)
-      .then(prrr => {
-        if (this.currentUser.github_username === prrr.owner)
-          return {prrr, ownerUser: this.currentUser}
+  getOwnerUserForPrrr(prrr){
+    if (this.currentUser.github_username === prrr.owner)
+      return Promise.resolve(this.currentUser)
 
-        return this.queries.getUserByGithubUsername(prrr.owner)
-          .catch(error => {
-          })
-          .then(ownerUser => {
-            if (ownerUser) return ({ownerUser, prrr})
-            throw new Error(`unable to add ${this.currentUser.github_username} to ${prrr.owner}/${prrr.repo} because ${prrr.owner} does not have a Prrr account`)
-          })
-      })
-      .then(({ownerUser, prrr}) => {
+    return this.queries.getUserByGithubUsername(prrr.owner)
+  }
+
+  addCurrentUserToPrrrRepo(prrr){
+    return this.getOwnerUserForPrrr(prrr)
+      .then(ownerUser => {
+        if (!ownerUser)
+          throw new Error(`unable to add ${this.currentUser.github_username} to ${prrr.owner}/${prrr.repo} because ${prrr.owner} does not have a Prrr account`)
+
         const github = this.as(ownerUser).github
         return github.repos.checkCollaborator({
           owner:    prrr.owner,
@@ -129,6 +128,7 @@ export default class Commands {
           username: this.currentUser.github_username,
         })
         .catch(error => {
+          if (error.code !== 404) throw error
           return github.repos.addCollaborator({
             owner:      prrr.owner,
             repo:       prrr.repo,
@@ -154,8 +154,36 @@ export default class Commands {
       .then(firstRecord)
   }
 
+  sendReviewRequest(prrr){
+    return request({
+      uri: `https://api.github.com/repos/${prrr.owner}/${prrr.repo}/pulls/${prrr.number}/requested_reviewers`,
+      method: 'POST',
+      body: {
+        reviewers: [
+          this.currentUser.github_username,
+        ],
+      },
+      headers: {
+        'user-agent': 'prrr-learnersguild-org',
+        'Authorization': `token ${this.currentUser.github_access_token}`,
+        'Accept': 'application/vnd.github.black-cat-preview+json'
+      },
+      json: true,
+    })
+    .catch(originalError => {
+      const error = new Error('Failed to create Github Pull Request Review Request')
+      error.originalError = originalError
+      error.status = 500
+      throw error
+    })
+  }
+
   claimPrrr(prrrId){
-    return this.addCurrentUserToPrrrRepo(prrrId)
+    return this.queries.getPrrrById(prrrId)
+      .then(prrr =>
+        this.addCurrentUserToPrrrRepo(prrr)
+        .then(_ => this.sendReviewRequest(prrr))
+      )
       .then(_ => this.markPullRequestAsClaimed(prrrId))
   }
 

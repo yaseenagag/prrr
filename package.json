@@ -25,6 +25,7 @@
     "passport": "^0.3.2",
     "passport-github": "^1.1.0",
     "pg": "^6.1.2",
+    "request-promise": "^4.1.1",
     "simple-react-router": "0.0.13",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",

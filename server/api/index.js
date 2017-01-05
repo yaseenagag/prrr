@@ -45,8 +45,8 @@ router.post('/pull-request-review-requests', (req, res, next) => {
 router.post('/pull-request-review-requests/:prrrId/claim', (req, res, next) => {
   const { prrrId } = req.params
   req.commands.claimPrrr(prrrId)
-    .then(prrr => {
-      res.json(prrr)
+    .then(_ => {
+      res.json({claimed: true, id: prrrId})
     })
     .catch(next)
 });
