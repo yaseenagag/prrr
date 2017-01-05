@@ -7,15 +7,14 @@ let GITHUB_CLIENT_ID
 let GITHUB_CLIENT_SECRET
 let GITHUB_CALLBACK
 
-if (process.env.NODE_ENV === 'development'){
-  GITHUB_CLIENT_ID     = process.env.GITHUB_CLIENT_ID
-  GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-  GITHUB_CALLBACK      = process.env.GITHUB_CALLBACK
-}
 if (process.env.NODE_ENV === 'test'){
   GITHUB_CLIENT_ID     = 'FAKE_GITHUB_CLIENT_ID'
   GITHUB_CLIENT_SECRET = 'FAKE_GITHUB_CLIENT_SECRET'
   GITHUB_CALLBACK      = 'http://example.com/oauth_callback'
+}else{
+  GITHUB_CLIENT_ID     = process.env.GITHUB_CLIENT_ID
+  GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
+  GITHUB_CALLBACK      = process.env.GITHUB_CALLBACK
 }
 
 const router = new express.Router()
