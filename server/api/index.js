@@ -61,11 +61,11 @@ router.post('/pull-request-review-requests/:prrrId/unclaim', (req, res, next) =>
 });
 
 
-router.post('/pull-request-review-requests/:prrrId/destroy', (req, res, next) => {
+router.post('/pull-request-review-requests/:prrrId/archive', (req, res, next) => {
   const { prrrId } = req.params
-  req.commands.destroyPrrr(prrrId)
+  req.commands.archivePrrr(prrrId)
     .then(_ => {
-      res.json()
+      res.json({id: prrrId, archived: true})
     })
     .catch(next)
 });

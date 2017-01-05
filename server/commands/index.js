@@ -167,11 +167,13 @@ export default class Commands {
       .then(firstRecord)
   }
 
-  destroyPrrr(purrId){
+  archivePrrr(purrId){
     return this.knex
       .table('pull_request_review_requests')
+      .update({
+        archived_at: new Date,
+      })
       .where('id', purrId)
-      .del()
   }
 }
 
