@@ -3,13 +3,15 @@ import Button from '../atoms/Button'
 import Layout from '../molecules/Layout'
 import InspectObject from '../utils/InspectObject'
 import createPrrr from '../../actions/createPrrr'
+import './RequestReviewPage.sass'
 
 export default class RequestReviewPage extends Component {
   render(){
     const { session } = this.props
-    return <Layout className="HomePage" session={session}>
-      <h1>Request Review</h1>
-      <CreatePrrrForm />
+    return <Layout className="RequestReviewPage" session={session}>
+      <div className="RequestReviewPage-RequestBox">
+        <CreatePrrrForm />
+      </div>
     </Layout>
   }
 }
@@ -67,22 +69,39 @@ class CreatePrrrForm extends Component {
       errorMessage = 'This pull request has allready been added'
 
 
-    return <form onSubmit={this.createPrrr}>
+    return <form className="RequestReviewPage-CreatePrrrForm" onSubmit={this.createPrrr}>
+      <h1>Submit Request Review</h1>
       {errorMessage && <h2>ERROR: {errorMessage}</h2>}
-      <div>
-        <input
+      <div className="RequestReviewPage-InputBoxPadding">
+        <input className="RequestReviewPage-InputBox"
           type="text"
+          placeholder="PR URL"
           ref="link"
           value={url}
           onChange={this.onChange}
           onBlur={this.onChange}
         />
       </div>
-      <div>owner: {owner}</div>
-      <div>repo: {repo}</div>
-      <div>number: {number}</div>
-      <div>
-        <input type="submit" value="add" />
+      <div className="RequestReviewPage-Text">
+        owner:
+        <span className="RequestReviewPage-SubmittedText">
+        {owner}
+      </span>
+      </div>
+      <div className="RequestReviewPage-Text">
+        repo:
+        <span className="RequestReviewPage-SubmittedText">
+        {repo}
+      </span>
+      </div>
+      <div className="RequestReviewPage-Text">
+        number:
+        <span className="RequestReviewPage-SubmittedText">
+        {number}
+      </span>
+      </div>
+      <div className="RequestReviewPage-ButtonDiv">
+        <button className="RequestReviewPage-Button" type="submit">Add Prrr</button>
       </div>
     </form>
   }
