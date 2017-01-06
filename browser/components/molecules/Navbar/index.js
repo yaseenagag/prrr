@@ -17,15 +17,17 @@ export default class Navbar extends Component {
       <div>
         <Button type={false} href="/">
           <img src={favicon} className="Navbar-favicon" />
-          &nbsp; Prrr
         </Button>
         &nbsp;
-        <Button type="transparent" href="/request">Request Review</Button>
+        <Button className="Navbar-button-add-prrr" href="/request"> Add a Prrr </Button>
+      </div>
+      <div>
+        <p className="Navbar-title"> Prrr </p>
       </div>
       <div>
         <span>{user.name}</span>
         <Avatar user={user} />
-        <Button type="transparent" onClick={logout}>Logout</Button>
+        <Button className="Navbar-button-logout" onClick={logout}>Logout</Button>
       </div>
     </div>
   }
