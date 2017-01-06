@@ -2,12 +2,24 @@ import React, { Component } from 'react'
 import Button from '../atoms/Button'
 import Layout from '../molecules/Layout'
 import InspectObject from '../utils/InspectObject'
+import './LoggedOutHomePage.sass'
+import favicon from '../../images/favicon.ico'
+import cat from '../../images/cat.jpg'
 
 export default class LoggedOutHomePage extends Component {
   render(){
     return <div className="LoggedOutHomePage">
-      <h1>Prrr</h1>
-      <Button href="/login" externalLink>Login or Signup</Button>
+      <div className="LoggedOutHomePage-SectionOne">
+        Prrr
+        <img src={favicon} className="LoggedOutHomePage-icon" />
+        <p className="LoggedOutHomePage-info"> The Pull Request Review Request Tool </p>
+      </div>
+      <div className="LoggedOutHomePage-SectionTwo">
+        <Button href="/login" externalLink>Login or Signup via Github</Button>
+      </div>
+      <div className="LoggedOutHomePage-SectionThree">
+        <p> Review Together. </p>
+      </div>
     </div>
   }
 }
