@@ -79,6 +79,15 @@ router.post('/pull-request-review-requests/:prrrId/complete', (req, res, next) =
     .catch(next)
 });
 
+router.get('/metrics', (req, res, next) => {
+  req.queries.metrics()
+    .then(metrics => {
+      res.json(metrics)
+    })
+    .catch(next)
+});
+
+
 // error handlers
 
 router.use((req, res, next) => {

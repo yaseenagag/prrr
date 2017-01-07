@@ -1,5 +1,6 @@
 import knex from '../knex'
 import Github from '../Github'
+import moment from 'moment'
 
 export default class Queries {
 
@@ -69,4 +70,79 @@ export default class Queries {
       .first()
   }
 
+  formatDate(date){
+    return moment(date).format('YYYY-MM-DD')
+    // return this.knex.raw('?', [moment(date).toDate()])+''
+  }
+
+  metrics(){
+    // TODO change to startOf to get last week
+    // this is doing THIS WEEK for now
+    const lastWeek = {
+      from: moment().endOf('week').subtract(1, 'week'),
+      to:   moment().endOf('week'),
+    }
+
+    const loadAllPrrsFromLastWeek = () =>
+      this.knex
+        .select('*')
+        .from('pull_request_review_requests')
+        .whereBetween('created_at', [
+          this.formatDate(lastWeek.from),
+          this.formatDate(lastWeek.to),
+        ])
+        .orderBy('created_at', 'desc')
+
+
+    const LongestTimeForPrrrToBeReviewedLastWeek = prrrs => {
+      const durations = prrrs
+        .filter(prrr => prrr.completed_at)
+        .map(prrr =>
+          moment(prrr.completed_at).diff(moment(prrr.created_at))
+        )
+      return Math.max.apply(Math, durations)
+    }
+
+    return loadAllPrrsFromLastWeek()
+      .then(prrrs => {
+        return {
+          version: 1,
+          longestTimeForPrrrToBeReviewedLastWeek: LongestTimeForPrrrToBeReviewedLastWeek(prrrs),
+          WTF: '??/',
+          from: lastWeek.from,
+          to: lastWeek.to,
+          count: prrrs.length,
+        }
+      })
+    // return Promise.resolve(lastWeek)
+
+
+    // return Promise.all([
+    //   LongestTimeForPrrrToBeReviewedLastWeek(),
+    // ]).then(([
+    //   longestTimeForPrrrToBeReviewedLastWeek,
+    // ]) => {
+
+    // })
+
+    // return this.knex
+    //   .select('*')
+    //   .from('pull_request_review_requests')
+    //   .orderBy('created_at', 'desc')
+    //   .then(prrrs => {
+    //     return {
+    //       count: prrrs.length,
+    //     }
+    //   })
+  }
+
 }
+
+
+// _Total code reviews last week
+// _Total code reviews per reviewer
+// _Longest time for PR to be reviewed last week
+// _Average time for PR to be claimed last week
+// _Average time for PR to be completed last week
+// _Total number of projects that requested reviews
+// _Average number of reviews requested per project

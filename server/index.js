@@ -8,12 +8,17 @@ import logger from 'morgan'
 import bodyParser from 'body-parser'
 import passport from 'passport'
 import cookieSession from 'cookie-session'
+import knexLogger from 'knex-logger'
+import knex from './knex'
 
 const publicPath = path.resolve(__dirname, '../public')
 const server = express()
 
 
-if (process.env.NODE_ENV !== 'test') server.use(logger('dev'))
+if (process.env.NODE_ENV !== 'test') {
+  server.use(logger('dev'))
+  server.use(knexLogger(knex));
+}
 server.use(cookieSession({
   name: 'session',
   keys: [process.env.SESSION_KEY]

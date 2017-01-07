@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { Component } from 'react'
 import startPollingForMetrics from '../../actions/startPollingForMetrics'
 import stopPollingForMetrics from '../../actions/stopPollingForMetrics'
@@ -17,6 +18,16 @@ export default class MetricsPage extends Component {
     const { session, metrics={} } = this.props
     return <Layout className="MetricsPage" session={session}>
       <InspectObject object={metrics} />
+      <div>
+        <h4>longestTimeForPrrrToBeReviewedLastWeek</h4>
+        <TimeDuration duration={metrics.longestTimeForPrrrToBeReviewedLastWeek} />
+      </div>
     </Layout>
   }
+}
+
+
+const TimeDuration = props => {
+  const duration = moment.duration(props.duration || 0)
+  return <span title={`${duration.asHours()} hours`}>{duration.humanize()}</span>
 }
