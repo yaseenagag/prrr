@@ -16,6 +16,7 @@
     "body-parser": "^1.15.2",
     "cookie-session": "^2.0.0-alpha.2",
     "dotenv": "^2.0.0",
+    "express-csv": "^0.6.0",
     "font-awesome": "^4.7.0",
     "github": "^7.1.0",
     "knex": "^0.12.6",

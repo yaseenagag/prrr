@@ -27,14 +27,22 @@ export default class Queries {
   }
 
   getPrrrs(){
-    return this.knex
-      .select('*')
-      .from('pull_request_review_requests')
-      .orderBy('created_at', 'desc')
+    return this.getAllPrrrs()
       .where({
         archived_at: null,
         completed_at: null,
       })
+  }
+
+  getAllPrrrs() {
+    return this.knex
+      .select('*')
+      .from('pull_request_review_requests')
+      .orderBy('created_at', 'desc')
+  }
+
+  getPrrrColumns() {
+    return this.knex('pull_request_review_requests').columnInfo()
   }
 
   getPrrrById(prrrId){
