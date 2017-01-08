@@ -79,6 +79,11 @@ router.post('/pull-request-review-requests/:prrrId/complete', (req, res, next) =
     .catch(next)
 });
 
+router.get('/statistics', (req, res) => {
+  req.queries.getAllPrrrs()
+    .then(result => res.json( result ))
+});
+
 router.get('/statistics/csv', (req, res) => {
   Promise.all([
     req.queries.getPrrrColumns(),
