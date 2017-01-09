@@ -1,0 +1,83 @@
+.statistics
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+  .statistic
+    flex: 1
+    margin: 10px
+    display: flex
+    flex-direction: column
+
+    &.blue
+      border: 1px solid #4FB9E8
+      color: white
+
+      .body
+        background-color: #27a9e3
+      .title
+        background-color: #2195c9
+
+    &.green
+      border: 1px solid #3CBE85
+      color: white
+
+      .body
+        background-color: #28B779
+      .title
+        background-color: #17A668
+
+    &.purple
+      border: 1px solid #984DA9
+      color: white
+
+      .body
+        background-color: #852B99
+      .title
+        background-color: #741D88
+
+    &.yellow
+      border: 1px solid #FFC262
+      color: white
+
+      .body
+        background-color: #FFC568
+      .title
+        background-color: #E0A74A
+
+    &.orange
+      border: 1px solid #FF8822
+      color: white
+
+      .body
+        background-color: #FF9900
+      .title
+        background-color: #CC6600
+
+    .body
+      flex: 5
+      padding: 10px
+      font-size: 32px
+
+      .row
+        display: flex
+
+        &:nth-child(odd)
+          background-color: #eee
+
+        .heading
+          flex: 3
+
+        .detail
+          flex: 1
+
+    .title
+      flex: 1
+      padding: 10px
+      margin: 0
+
+    .header
+      font-size: 20px
+      flex: 1
+      padding: 10px
+      margin: 0

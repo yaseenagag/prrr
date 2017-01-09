@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import request from '../../../../request'
 import moment from 'moment'
 
-export default class AverageClaimTime extends Component {
+export default class AverageTimeToBeClaimedLastWeek extends Component {
   constructor( props ) {
     super( props )
 
@@ -28,9 +28,8 @@ export default class AverageClaimTime extends Component {
     const { averageTime } = this.props
 
     return (
-      <div className="statistic green">
-        <div className="body">{this.displayAverageTime()}</div>
-        <div className="title">Average Claim Time</div>
+      <div>
+        <h5>Average time for PR to be claimed last week: {this.displayAverageTime()}</h5>
       </div>
     )
   }

@@ -19,8 +19,9 @@ export default class ProjectsRequestingReview extends Component {
     if( ! this.state.loading ) {
       return this.state.reviews.map( review => {
         return (
-          <div key={`review-count-${review.repo}`}>
-            <span>{review.repo}</span> - <span>{review.count}</span>
+          <div className="row" key={`review-count-${review.repo}`}>
+            <span className="heading">{review.repo}</span>
+            <span className="detail">{review.count}</span>
           </div>
         )
       })
@@ -31,9 +32,9 @@ export default class ProjectsRequestingReview extends Component {
     const { count } = this.state
 
     return (
-      <div>
-        <h5>Total number of projects that requested reviews: {count}</h5>
-        {this.projects()}
+      <div className="statistic">
+        <div className="header">Reviews Requested By Project ({count})</div>
+        <div className="body">{this.projects()}</div>
       </div>
     )
   }

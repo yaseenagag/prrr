@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import request from '../../../../request'
 
-export default class Reviews extends Component {
+export default class ReviewsLastWeek extends Component {
   constructor( props ) {
     super( props )
 
@@ -17,9 +17,8 @@ export default class Reviews extends Component {
     const { count } = this.state
 
     return (
-      <div className="statistic blue">
-        <div className="body">{count}</div>
-        <div className="title">Total Code Reviews</div>
+      <div>
+        <h5>Total code reviews last week: {count}</h5>
       </div>
     )
   }

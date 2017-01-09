@@ -28,8 +28,9 @@ export default class AverageCompletionTime extends Component {
     const { averageTime } = this.props
 
     return (
-      <div>
-        <h5>Average time for PR to be completed last week: {this.displayAverageTime()}</h5>
+      <div className="statistic purple">
+        <div className="body">{this.displayAverageTime()}</div>
+        <div className="title">Average Completion Time</div>
       </div>
     )
   }

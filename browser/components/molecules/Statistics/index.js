@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './index.sass'
 
 import Reviews from './Reviews'
 import ReviewsPerReviewer from './ReviewsPerReviewer'
@@ -11,14 +12,18 @@ import AverageReviewsPerProject from './AverageReviewsPerProject'
 export default class StatisticsView extends Component {
   render() {
     return (
-      <div className="statistics">
-        <Reviews />
-        <ReviewsPerReviewer />
-        <LongestTimeForReview />
-        <AverageClaimTime />
-        <AverageCompletionTime />
-        <ProjectsRequestingReview />
-        <AverageReviewsPerProject />
+      <div>
+        <div className="statistics">
+          <Reviews />
+          <AverageClaimTime />
+          <AverageCompletionTime />
+          <LongestTimeForReview />
+          <AverageReviewsPerProject />
+        </div>
+        <div className="statistics">
+          <ReviewsPerReviewer />
+          <ProjectsRequestingReview />
+        </div>
       </div>
     )
   }

@@ -39,9 +39,9 @@ export default class LongestTimeForReview extends Component {
 
   render() {
     return (
-      <div>
-        <h5>Longest time for PR to be reviewed last week:</h5>
-        {this.reviewer()}
+      <div className="statistic yellow">
+        <div className="body">{this.reviewer()}</div>
+        <div className="title">Longest Review Time</div>
       </div>
     )
   }

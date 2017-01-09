@@ -17,8 +17,9 @@ export default class AverageReviewsPerProject extends Component {
     const { avg } = this.state
 
     return (
-      <div>
-        <h5>Average number of reviews requested per project: {avg}</h5>
+      <div className="statistic orange">
+        <div className="body">{avg}</div>
+        <div className="title">Average Reviews Per Project (Overall)</div>
       </div>
     )
   }

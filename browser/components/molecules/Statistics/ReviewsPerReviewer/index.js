@@ -18,9 +18,9 @@ export default class ReviewsPerReviewer extends Component {
   reviewers() {
     if( !this.state.loading ) {
       return this.state.reviewers.map( review => {
-        return <div key={`reviewer-${review.claimed_by}`}>
-          <span>{review.claimed_by}</span> -
-          <span>{review.count}</span>
+        return <div className="row" key={`reviewer-${review.claimed_by}`}>
+          <span className="heading">{review.claimed_by}</span>
+          <span className="detail">{review.count}</span>
         </div>
       })
     } else {
@@ -32,9 +32,9 @@ export default class ReviewsPerReviewer extends Component {
     const { loading } = this.state
 
     return (
-      <div>
-        <h5>Total code reviews per reviewer:</h5>
-        {this.reviewers()}
+      <div className="statistic">
+        <div className="header">Reviews Per Reviewer</div>
+        <div className="body">{this.reviewers()}</div>
       </div>
     )
   }
