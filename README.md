@@ -5,13 +5,48 @@
 ![prrr](http://www.kittenswhiskers.com/wp-content/uploads/sites/48/2014/05/cat-purring.jpg)
 
 
+## Development
+
+```
+npm install
+npm run build
+```
+
+### Setup
+
+Go [here](https://github.com/settings/developers) and register a new OAuth
+application.
+
+```
+Application name: prrr development
+Homepage URL: http://localhost:3000/
+Application Description:
+Authorization callback URL: http://localhost:3000/auth/github/callback
+```
+
+*NOTE: you can use any port you want. It doesnt need to be 3000*
 
 
-## User Stories
+Create a `.env` file like this:
 
-- As a user I can log in via Github and give the app offline access
-- As a user I add a pull request to the queue by posting a link to it
-- As a user I can remove my PR fro the queue
-- As a user I can view the list of PRs in the queue
-- As a user I can claim one of the PRs in the queue
-- When you claim one it adds you to the repo of the PR and opens that PR for review in another tab
+```
+NODE_ENV=development
+PORT=3000
+GITHUB_CLIENT_ID=<FOLLOW GITHUB INSTRUCTIONS>
+GITHUB_CLIENT_SECRET=<FOLLOW GITHUB INSTRUCTIONS>
+GITHUB_CALLBACK=http://localhost:3000/auth/github/callback
+SESSION_KEY=thiscanbeanyoldrandomstring
+```
+
+*NOTE: you can use any port you want as long as it matches your
+github oauth*
+
+### Database
+
+*NOTE: you need to run `npm run build` before you can run `knex` commands
+
+```sh
+createdb prrr-development
+createdb prrr-test
+knex migrate:latest
+```
