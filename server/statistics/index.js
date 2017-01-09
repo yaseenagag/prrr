@@ -7,16 +7,16 @@ export default class Statistics {
   }
 
   beginningOfLastWeek() {
-    return moment().startOf( 'week' ).subtract( 7, 'days' )
+    return moment().startOf( 'week' ).subtract( 7, 'days' ).format( 'YYYY-MM-DD' )
   }
 
   endOfLastWeek() {
-    return moment().startOf( 'week' )
+    return moment().startOf( 'week' ).format( 'YYYY-MM-DD' )
   }
 
   between( params ) {
     if ( params !== undefined && params.all !== undefined ) {
-      return [ '2015-01-01', moment().add( 1, 'days' ).format() ]
+      return [ '2015-01-01', moment().add( 1, 'days' ).format( 'YYYY-MM-DD' ) ]
     }
     else if( params === undefined || params.start === undefined || params.end === undefined ) {
       return [ this.beginningOfLastWeek(), this.endOfLastWeek() ]
@@ -39,11 +39,12 @@ export default class Statistics {
       }))
   }
 
-  totalReviewsPerReviewer() {
+  totalReviewsPerReviewer( params ) {
     return this.knex
       .select('claimed_by', knex.raw('COUNT(claimed_by) as count'))
       .from('pull_request_review_requests')
       .whereNotNull( 'claimed_by' )
+      .orWhereBetween( 'created_at', this.between( params ) )
       .groupBy( 'claimed_by' )
       .orderBy( 'count', 'desc' )
   }
@@ -72,19 +73,32 @@ export default class Statistics {
       .then( result => result[ 0 ].avg )
   }
 
-  reviewsRequestedByProject() {
+  reviewsRequestedByProject( params ) {
     return this.knex
       .select( 'repo', knex.raw('count(repo) as count'))
       .from('pull_request_review_requests')
+      .whereBetween( 'created_at', this.between( params ) )
       .groupBy( 'repo' )
       .orderBy( 'count', 'desc' )
   }
 
-  averageReviewsPerProject() {
+  averageReviewsPerProject( params ) {
     return this.knex.raw(
-      'select avg(count) from ( select count(repo) as count from pull_request_review_requests group by repo ) as avg'
+      this._averageReviewsPerProjectQuery( params )
     ).then( result => {
       return { avg: parseFloat( result.rows[ 0 ].avg )}
     })
+  }
+
+  _averageReviewsPerProjectQuery( params ) {
+    const betweenQuery = this.between( params )
+
+    return `
+      select avg(count) from (
+        select count(repo) as count from pull_request_review_requests
+        where created_at between '${betweenQuery[ 0 ]}' and '${betweenQuery[ 1 ]}'
+        group by repo
+      ) as avg
+    `
   }
 }
