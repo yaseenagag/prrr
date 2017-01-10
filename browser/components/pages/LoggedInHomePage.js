@@ -11,10 +11,10 @@ export default class LoggedInHomePage extends Component {
     return <Layout className="HomePage" session={session}>
 
       <h1>Pull Requests Waiting For Review:</h1>
-      <PendingPrrrs
+      {/* <PendingPrrrs
         currentUser={session.user}
         prrrs={prrrs}
-      />
+      /> */}
 
       <h1>Claimed Pull Requests:</h1>
       <ClaimedPrrrs
