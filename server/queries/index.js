@@ -37,6 +37,21 @@ export default class Queries {
       })
   }
 
+  getNextPrrr(){
+    return this.knex
+      .select('*')
+      .from('pull_request_review_requests')
+      .orderBy('created_at', 'desc')
+      .where({
+        archived_at: null,
+        completed_at: null,
+        claimed_by: null,
+        claimed_at: null,
+        id: prrrId,
+      })
+      .limit(1)
+  }
+
   getPrrrById(prrrId){
     return this.knex
       .select('*')

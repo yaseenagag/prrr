@@ -179,7 +179,7 @@ export default class Commands {
   }
 
   claimPrrr(prrrId){
-    return this.queries.getPrrrById(prrrId)
+    return this.queries.getNextPrrr(prrrId)
       .then(prrr =>
         this.addCurrentUserToPrrrRepo(prrr)
         .then(_ => this.sendReviewRequest(prrr))
