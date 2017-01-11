@@ -178,8 +178,8 @@ export default class Commands {
     })
   }
 
-  claimPrrr(prrrId){
-    return this.queries.getPrrrById(prrrId)
+  claimPrrr(githubUsername){
+    return this.queries.getNextPrrr(githubUsername)
       .then(prrr =>
         this.addCurrentUserToPrrrRepo(prrr)
         .then(_ => this.sendReviewRequest(prrr))

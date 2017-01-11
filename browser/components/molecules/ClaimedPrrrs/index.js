@@ -4,7 +4,6 @@ import Link from '../../atoms/Link'
 import Date from '../../atoms/Date'
 import Button from '../../atoms/Button'
 import GithubUsername from '../../atoms/GithubUsername'
-import PrrrsTable from '../PrrrsTable'
 import unclaimPrrr from '../../../actions/unclaimPrrr'
 import completePrrr from '../../../actions/completePrrr'
 
