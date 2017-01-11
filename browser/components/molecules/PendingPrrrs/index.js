@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-// import moment from 'moment'
+import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
-import ClaimPrrrBanner from '../ClaimPrrrBanner'
+import PrrrsTable from '../PrrrsTable'
+// import ClaimPrrrBanner from '../ClaimPrrrBanner'
 import ErrorMessage from '../../atoms/ErrorMessage'
 import claimPrrr from '../../../actions/claimPrrr'
 
@@ -32,6 +33,24 @@ export default class PendingPrrrs extends Component {
       })
   }
 
+  renderAdditionalHeaders(){
+    return [
+      <th key="actions">Actions</th>,
+    ]
+  }
+
+  renderAdditionalCells = (prrr) => {
+    const { currentUser } = this.props
+    const disabled = prrr.requested_by === currentUser.github_username
+    return [
+      <td key="actions">
+        <Button onClick={_ => this.claimPrrr(prrr)} disabled={disabled}>
+          Claim
+        </Button>
+      </td>,
+    ]
+  }
+
   render(){
     const prrrs = this.props.prrrs
       .filter(prrr => !prrr.claimed_by)
@@ -42,10 +61,12 @@ export default class PendingPrrrs extends Component {
 
     return <div>
       {this.state.error ? <ErrorMessage error={this.state.error} /> : null}
-      <ClaimPrrrBanner
-        className="ClaimPrrrBanner"
+      <PrrrsTable
+        className="PendingPrrrs"
         currentUser={this.props.currentUser}
         prrrs={prrrs}
+        renderAdditionalHeaders={this.renderAdditionalHeaders}
+        renderAdditionalCells={this.renderAdditionalCells}
       />
     </div>
   }
