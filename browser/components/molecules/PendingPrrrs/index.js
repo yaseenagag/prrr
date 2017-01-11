@@ -3,7 +3,7 @@ import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
 import PrrrsTable from '../PrrrsTable'
-import ClaimPrrrBanner from '../ClaimPrrrBanner'
+// import ClaimPrrrBanner from '../ClaimPrrrBanner'
 import ErrorMessage from '../../atoms/ErrorMessage'
 import claimPrrr from '../../../actions/claimPrrr'
 
@@ -45,7 +45,7 @@ export default class PendingPrrrs extends Component {
       <td key="actions">
         <Button onClick={_ => this.claimPrrr(prrr)} disabled={disabled}>
           Claim
-        </Button>,
+        </Button>
       </td>,
     ]
   }
@@ -60,11 +60,11 @@ export default class PendingPrrrs extends Component {
 
     return <div>
       {this.state.error ? <ErrorMessage error={this.state.error} /> : null}
-      <ClaimPrrrBanner
+      {/* <ClaimPrrrBanner
         className="TopPendingPrrr"
         currentUser={this.props.currentUser}
         prrrs={prrrs}
-      />
+      /> */}
       <PrrrsTable
         className="PendingPrrrs"
         currentUser={this.props.currentUser}
