@@ -44,7 +44,7 @@ server.start = function(port, callback){
   console.log(`http://localhost:${port}/`)
   server.listen(port, callback)
 }
-
+//add setinterval for purging overdue Prrrs here? ask Jared
 
 if (process.env.NODE_ENV !== 'test'){
   server.start(process.env.PORT || '3000')

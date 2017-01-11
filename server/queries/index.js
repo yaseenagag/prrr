@@ -37,7 +37,7 @@ export default class Queries {
       })
   }
 
-  getNextPrrr(){
+  getNextPrrr(githubUsername){
     return this.knex
       .select('*')
       .from('pull_request_review_requests')
@@ -49,6 +49,7 @@ export default class Queries {
         claimed_at: null,
         id: prrrId,
       })
+      .whereNot('requested_by', githubUsername)
       .limit(1)
   }
 

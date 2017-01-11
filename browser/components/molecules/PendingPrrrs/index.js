@@ -20,6 +20,7 @@ export default class PendingPrrrs extends Component {
 
   claimPrrr(prrr){
     claimPrrr(prrr.id)
+    //what is the underscore in the line below doing?
       .then(_ => {
         const url = `https://github.com/${prrr.owner}/${prrr.repo}/pull/${prrr.number}`
         const popup = window.open(url, '_blank')
@@ -60,11 +61,6 @@ export default class PendingPrrrs extends Component {
 
     return <div>
       {this.state.error ? <ErrorMessage error={this.state.error} /> : null}
-      {/* <ClaimPrrrBanner
-        className="TopPendingPrrr"
-        currentUser={this.props.currentUser}
-        prrrs={prrrs}
-      /> */}
       <PrrrsTable
         className="PendingPrrrs"
         currentUser={this.props.currentUser}
