@@ -20,6 +20,11 @@ export default class LoggedInHomePage extends Component {
         currentUser={session.user}
         prrrs={prrrs}
       />
+      <h1>Claimed Pull Requests:</h1>
+      <ClaimedPrrrs
+        currentUser={session.user}
+        prrrs={prrrs}
+      />
     </Layout>
   }
 }

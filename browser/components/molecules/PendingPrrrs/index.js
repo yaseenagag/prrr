@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import moment from 'moment'
+// import moment from 'moment'
 import Link from '../../atoms/Link'
 import Button from '../../atoms/Button'
 import ClaimPrrrBanner from '../ClaimPrrrBanner'
